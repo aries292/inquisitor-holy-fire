@@ -1,0 +1,838 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#15111c"><title>INQUISITOR • HOLY FIRE — Versione 7.9</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0f0d16;color:#f8e8c8;font-family:Georgia,serif}body{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 10%,#4b2f3b 0%,#171421 55%,#0d0b14 100%)}.shell{width:min(1080px,100%);padding:12px 12px 22px}.mast{text-align:center;margin:4px 0 14px}.eyebrow{font:700 11px system-ui,sans-serif;letter-spacing:5px;color:#e8b67a}.mast h1{font-size:clamp(24px,5.8vw,46px);letter-spacing:3px;color:#f8dda0;margin:5px 0;text-shadow:0 3px #7b3c35,0 6px #17111f}.mast p{font:12px system-ui,sans-serif;letter-spacing:2px;color:#bcadb0;margin:0}.cabinet{position:relative;border:5px solid #312433;outline:2px solid #bc7d59;box-shadow:0 14px 0 #090911,0 28px 56px #000a;background:#2d2838}.cabinet:before{content:"";position:absolute;inset:0;border:2px solid #5b4356;pointer-events:none}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none;background:#231f31}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#100c18be;padding:14px}.panel{max-width:540px;width:94%;text-align:center;padding:26px 24px 22px;background:linear-gradient(#342637,#1d1a29);border:3px solid #b97d5d;box-shadow:inset 0 0 0 4px #5b4254,0 10px 38px #08070ebd}.panel .sigil{font-size:35px;color:#ffd98d}.panel h2{font-size:clamp(27px,6vw,44px);line-height:1;margin:6px 0 14px;color:#ffd88d;text-shadow:3px 4px #743737}.panel p{font:14px/1.6 system-ui,sans-serif;color:#efe0d0;margin:0 auto 16px}.btn{border:2px solid #ffe0a0;color:#fff0cb;background:linear-gradient(#b95642,#8a3437);font:900 15px system-ui,sans-serif;letter-spacing:1.5px;padding:13px 24px;box-shadow:3px 4px #1a1420;cursor:pointer;touch-action:none}.btn:active{transform:translate(2px,2px);box-shadow:1px 2px #1a1420}.bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 1px 0}.instructions{font:13px/1.75 system-ui,sans-serif;color:#d0c1bf}.instructions b{color:#fae0ae}.buttons{display:flex;gap:10px}.fire{min-width:130px;min-height:68px;font-size:18px}.jump{min-height:68px;min-width:115px;background:linear-gradient(#588392,#385764)}.holy{min-height:68px;min-width:105px;background:linear-gradient(#b77b3e,#7c3543);color:#ffe9b2}.holy:disabled{opacity:.55;cursor:default;filter:grayscale(.65)}.pause{min-height:68px;min-width:65px;background:linear-gradient(#6a596f,#473746)}.fine{text-align:center;color:#9c9199;font:11px system-ui,sans-serif;margin:15px 0 0}.hidden{display:none!important}@media(max-width:640px){.shell{padding:8px}.cabinet{border-width:3px}.bottom{align-items:stretch}.instructions{font-size:10px}.buttons{gap:5px}.fire{min-width:91px;padding:10px}.jump{min-width:88px;padding:10px}.pause{min-width:49px;padding:8px}.holy{min-width:73px;padding:8px;font-size:12px}}
+.audio-panel{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;padding:11px;border:1px solid #796175;background:#211b2b;border-radius:5px;font:12px system-ui,sans-serif}.audio-panel label{display:flex;align-items:center;gap:6px;cursor:pointer}.audio-panel input[type=range]{width:110px;accent-color:#f5c17a}.audio-panel input[type=checkbox]{accent-color:#bf7853;width:17px;height:17px}.audio-panel strong{letter-spacing:1px;color:#ffdc98}.audio-panel button{padding:5px 9px;color:#fbe4ba;background:#493348;border:1px solid #9e7466;cursor:pointer}
+
+/* Safari iOS: pulsanti touch affidabili e schermi stretti */
+button,canvas{-webkit-tap-highlight-color:transparent}button{-webkit-appearance:none;appearance:none}.buttons button{user-select:none;-webkit-user-select:none;touch-action:none}.shell{max-width:100vw}@media(max-width:740px) and (orientation:portrait){.bottom{flex-direction:column}.buttons{display:grid;grid-template-columns:1fr 1fr 1fr;width:100%}.buttons button{min-width:0;min-height:64px;font-size:clamp(12px,3.6vw,18px)}.instructions{text-align:center}.mast h1{font-size:clamp(19px,5vw,33px)}.audio-panel{font-size:12px}}
+.cabinet{border-color:#7d5e60;box-shadow:0 0 0 3px #1b1420,0 16px 0 #090911,0 28px 56px #000b}.mast h1{text-shadow:0 3px #7b3c35,0 6px #17111f,0 0 20px #a66b4a66}.btn{border-radius:3px}.panel{background:linear-gradient(145deg,#493345,#211c2d 72%)}
+.difficulty{margin:4px auto 17px;width:100%}.difficulty-label{font:700 12px system-ui,sans-serif;letter-spacing:2px;color:#f5d7a0;margin-bottom:10px}.difficulty-options{display:flex;justify-content:center;gap:7px}.difficulty-option{flex:1;min-width:0;max-width:150px;background:#271d2b;border:2px solid #745366;color:#f0dfc4;padding:9px 5px;font:800 13px system-ui,sans-serif;cursor:pointer;touch-action:manipulation}.difficulty-option small{display:block;font:600 10px system-ui,sans-serif;margin-top:5px;color:#e0ae84}.difficulty-option.selected{border-color:#ffd18a;background:#653b42;box-shadow:0 0 0 1px #e2a967}.difficulty-description{font:12px/1.5 system-ui,sans-serif;color:#cab5aa;margin-top:8px}@media(max-width:440px){.difficulty-option{font-size:11px;padding:7px 3px}.difficulty-option small{font-size:9px}} 
+/* Menu responsive: durante l'apertura i comandi non devono comparire sotto il pannello. */
+.bottom{justify-content:center}.buttons{justify-content:center}
+.shell.menu-active .bottom{visibility:hidden;pointer-events:none}
+@media(max-width:740px) and (orientation:portrait){
+ .shell.menu-active .cabinet canvas{display:none}
+ .shell.menu-active .cabinet .overlay{position:relative;inset:auto;min-height:0;padding:12px;background:#171020}
+ .shell.menu-active .cabinet .panel{width:100%;max-width:none;padding:18px 12px 20px}
+ .shell.menu-active .cabinet .panel h2{font-size:clamp(26px,8vw,40px)}
+ .shell.menu-active .cabinet .panel p{font-size:13px;line-height:1.45}
+ .shell.menu-active .bottom{display:none}
+}
+
+/* v7.8.4 – comandi organizzati per priorità, sempre su due righe */
+.game-controls{display:grid;grid-template-rows:auto auto;gap:10px;margin-top:16px;width:100%}
+.action-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%}
+.action-row .btn{width:100%;min-width:0;min-height:70px;padding:10px 5px;font-size:clamp(13px,2.6vw,19px);white-space:nowrap}
+.settings-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:stretch;gap:10px;width:100%}
+.settings-row>.pause{width:100%;min-width:0;min-height:76px;font-size:clamp(12px,2.4vw,18px)}
+.settings-row>.audio-panel{margin:0;min-width:0;width:100%;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;padding:8px 12px}
+.audio-toggles{display:flex;justify-content:center;align-items:center;gap:clamp(7px,2vw,20px);flex-wrap:wrap}
+.audio-volume{display:flex!important;align-items:center;justify-content:center;gap:7px;white-space:nowrap}
+.audio-volume input[type=range]{width:auto;min-width:35px;max-width:190px;flex:1}
+.shell.menu-active .game-controls{display:none}
+@media(max-width:740px) and (orientation:portrait){
+ .game-controls{gap:7px;margin-top:10px}
+ .action-row,.settings-row{gap:7px}
+ .action-row .btn{min-height:62px;font-size:clamp(11px,3.1vw,16px);letter-spacing:0;padding:8px 2px}
+ .settings-row>.pause{min-height:87px;padding:7px 2px;font-size:clamp(12px,3vw,16px)}
+ .settings-row>.audio-panel{font-size:clamp(10px,2.8vw,13px);padding:6px 5px;gap:5px}
+ .audio-toggles{gap:8px}
+ .audio-panel label{gap:3px}
+ .audio-panel input[type=checkbox]{width:15px;height:15px}
+ .audio-volume{gap:5px}
+ .audio-volume input[type=range]{width:50px;max-width:none}
+}
+/* v7.8.5 – comandi leggermente più in basso, sempre raggiungibili */
+.game-controls{margin-top:30px}
+@media(max-width:740px) and (orientation:portrait){
+ .game-controls{margin-top:25px}
+ .shell{padding-bottom:max(20px,env(safe-area-inset-bottom,0px))}
+ body{display:block;overflow-y:auto;-webkit-overflow-scrolling:touch}
+}
+.results{margin:10px auto 17px;width:100%;max-width:460px;border-top:2px solid #8c6757;border-bottom:2px solid #8c6757;padding:12px 4px;color:#f3d8b4}.results.hidden{display:none!important}.results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.results-cell{border:1px solid #665167;background:#221a2c;padding:8px 5px}.results-cell strong{display:block;font:700 21px monospace;color:#ffd995}.results-cell span{font:11px system-ui,sans-serif;color:#d6bfae}.results-foot{font:12px/1.4 system-ui,sans-serif;padding-top:9px;color:#e2c8b1}.victory-animation .panel{display:none}.victory-flare{position:absolute;inset:0;background:radial-gradient(circle at 55% 50%,rgba(255,236,157,.9),rgba(242,98,33,.43) 38%,transparent 80%);pointer-events:none;animation:finalflare .55s ease-in-out infinite alternate}@keyframes finalflare{from{opacity:.25}to{opacity:.8}}@media(max-width:500px){.results-cell strong{font-size:18px}.results-cell span{font-size:10px}}
+</style></head><body><main class="shell menu-active"><header class="mast"><h1>INQUISITOR · HOLY FIRE</h1></header><div class="cabinet"><canvas id="game" width="960" height="480" aria-label="Gioco arcade Inquisitor Holy Fire"></canvas><div id="overlay" class="overlay"><div class="panel"><div class="sigil">✠</div><h2 id="headline">HOLY FIRE</h2><p id="message">Corri, salta e spara! Eretici comuni, streghe volanti e guerrieri rapidi. Raccogli i bonus luminosi e concatena le sconfitte per moltiplicare i punti.</p><div class="difficulty"><div class="difficulty-label">SCEGLI LA DIFFICOLTÀ</div><div class="difficulty-options" role="group" aria-label="Difficoltà"><button type="button" class="difficulty-option selected" data-level="easy" aria-pressed="true">EASY <small>×1 PUNTI</small></button><button type="button" class="difficulty-option" data-level="medium" aria-pressed="false">MEDIUM <small>×1,5 PUNTI</small></button><button type="button" class="difficulty-option" data-level="hard" aria-pressed="false">HARD <small>×2 PUNTI</small></button></div><div id="difficulty-description" class="difficulty-description">Ritmo e densità originali</div></div><div id="results" class="results hidden" aria-live="polite"></div><button class="btn" id="start">INIZIA LA PARTITA</button></div></div></div><div class="game-controls"><div class="action-row"><button class="btn fire" id="fire">✹ FUOCO</button><button class="btn jump" id="jump">↑ SALTA</button><button class="btn holy" id="holy" disabled>✠ DIES IRAE</button></div><div class="settings-row"><button class="btn pause" id="pause" aria-label="Metti in pausa">Ⅱ PAUSA</button><div class="audio-panel" aria-label="Impostazioni audio"><div class="audio-toggles"><label><input id="musicEnabled" type="checkbox" checked> Musica</label><label><input id="effectsEnabled" type="checkbox" checked> Effetti</label></div><label class="audio-volume"><span>Volume</span><input type="range" id="audioVolume" min="0" max="100" step="5" value="65" aria-label="Volume generale"><output id="volumeText">65%</output></label></div></div></div></main>
+<script>
+(()=>{'use strict';
+const C=document.getElementById('game'),g=C.getContext('2d');g.imageSmoothingEnabled=false;
+const W=960,H=480,GROUND=388,MAX_SHOT_RANGE=W*.45;
+const DIFFICULTIES={easy:{label:'EASY',points:1,speed:1,density:1,cap:0,attack:1,holyTarget:1000},medium:{label:'MEDIUM',points:1.5,speed:1.16,density:1.23,cap:1,attack:.88,holyTarget:1500},hard:{label:'HARD',points:2,speed:1.32,density:1.48,cap:2,attack:.76,holyTarget:2000}};let difficultyName='easy',difficulty=DIFFICULTIES.easy;const pointValue=n=>Math.round(n*difficulty.points);const bestKey=()=>difficultyName==='easy'?'holyFireBest':'holyFireBest_'+difficultyName;
+let mode='menu',score=0,best=0,lives=3,clock=0,spawn=1,cd=0,scroll=0,hurt=0,shake=0,last=0;
+let nextCoven=12;
+let shots=[],mobs=[],hazards=[],dust=[],fx=[],embers=[],bonuses=[];
+let directorTime=0,sequence=[],sequenceGap=0,stage=1,rest=0,nextRest=24,boss=null,bossShots=[],nextBoss=27,bossCount=0;
+let finalBossStarted=false;let wave=null,holyReady=false,holyProgress=0,waveEarned=0;
+let stats={shots:0,hits:0,kills:0,byType:Array(8).fill(0),bosses:0,damage:0,specials:0,maxCombo:0},victoryTime=0,victoryBurst=0;
+let combo=0,comboTimer=0,power={shield:0,double:0,strong:0},bonusSpawn=11,notice='',noticeT=0;
+try{best=+(localStorage.getItem('holyFireBest')||0)}catch{}
+const overlay=document.getElementById('overlay'),headline=document.getElementById('headline'),message=document.getElementById('message'),start=document.getElementById('start');
+const hero={x:128,y:GROUND-96,w:74,h:96,vy:0,onGround:true};
+const R=(a,b)=>a+Math.random()*(b-a),ri=(a,b)=>Math.floor(R(a,b+1));
+const rect=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))};
+const circle=(x,y,r,c)=>{g.fillStyle=c;g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill()};
+function poly(pts,c){g.fillStyle=c;g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1]);g.closePath();g.fill()}
+function text(t,x,y,size=18,color='#fff1cd',align='left'){g.font=`bold ${size}px monospace`;g.textAlign=align;g.fillStyle='#201826';g.fillText(t,x+2,y+3);g.fillStyle=color;g.fillText(t,x,y);g.textAlign='left'}
+
+// Sprite sheet PNG veri: una riga di frame 64 × 64, letti dal percorso assets/.
+const spriteDefs={skeleton:'scheletro.png',knight:'cavaliere.png',necro:'negromante.png',hero:'inquisitore.png',heretic:'eretico.png',witch:'strega.png',saracen:'saraceno.png',books:'libri_infuocati.png',fire:'palle_fuoco.png',impact:'impatto.png',demon:'demone.png',plague:'medico_peste.png'};
+const embeddedSpriteData={'scheletro.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAAC+UlEQVR4nO3dsWoUURQG4BsRC7FKERCxEQLxAVIFQjrtBCGkEyzEBxAEfQAFxcrSQrCTgGCnnQSsgpWFgWCsRIiQStJYxCqyjpPdbLJz594939dlZmd2/twlZ87c2UlKAAAAAAAAAAAAAAAAAABAeWZyvMnu9oeD02w/N7+S5Ti7Ir/8p9lefvkndSxNZ7raMQBlUwAAglIAAIJSAACCUgAAglIAAILq7TbQ5ev3/vl5492zoeu3vn6q9lYw+eVvLpNf/kF95dcBAASlAAAEpQAABKUAAATlWUAZyC//abaXX/5JHUvT2a52PK5bd560Ln/14n7mI+mH/PK3qSX/9zfrR/6R+/3558T3fenmatVFoamv8XcJCCCorB3A1s63nG9XHPnlJ64Sxz9LBzA3vzJz0utYtV//S0l++WPnj67k8c/64dp4/3KsyZDla7en6sMvv/zjvL6m/MPmALpQ4xxAieNvDgAgKAUAIKhOWoztzbetrc6Pvb2UUkqPHq8P3f7hg9WUUkoXZ2eHvm5+8UaRbaD88rctn+b8uS8B7V8+V1T+QTWNvw4AICgFACCoXr4JfNjiRCW//MRV0vjrAACCUgAAgsp6CWjU7HfT86d3OzqSfsgv/zimLX90JY6/DgAgKAUAIKisl4BKmv3ug/zyE1eJ468DAAiqkw7gqK8oj/s0vFrJL3/b8ij5o6tp/Iv5l5BtSn3WRy7yy9/3MZQqwu8mR8aiCwBQh+M8n7/E5+FHZw4AIKjsHcDchfP/Ldv9td+6fuvj64OUUlpYWpuaMwH55W+SX/629Tny6wAAgspeWQ+r2qDBCjdqfe3kl7+5TH75j7t+0nQAAEG5C6gCV68s/j0r+LKzOTVnQxyP8Y+ty/HXAQAENfEOYLBaNZ20ejkDqofxj83410UHABCUOYAJ6+IMiHoY/9hqG38dAEBQCgBAUAoAQFAKAEBQCgBAUNnvAhr1XIuFpbWZYTPptZNf/lHr5Zc/1/HoAACCUgAAAAAApt4fUi++BOBRkLYAAAAASUVORK5CYII=','cavaliere.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAADPklEQVR4nO3dO2gUURQG4IkvECysLe2CNoIWtnGJibGzEIsUCsFKlKBoIwRsFCUoVhLQwsLKUhIlprWwsFHSiYWvMoiiKKKFxGwSx83O3p2dnfN9le4wd+6fKQ5n79zZLAMAAACg5gbKuMjpc5d/FTnvzs0rpcyv2+SXv8h58sufei5rber2BQCoJgUAICgFACAoBQAgqGSLDGcuTOUudHz/8bPQmNu2bv7v8dvXpyqzSCS//HnH5Je/iDLy6wAAglIAAILaUsZFWrUydSe//JHJX938OgCAoLrWATQah5KPOT//NPmY3SK//KnJL39qOgCAoBQAgKAUAICgFACAoEp5DLTZ+cnJjs4fOTKWaCa9Ib/8nZBf/pR0AABBKQAAQSkAAEGVvgZwY3q68Ln9tBEkj/zyFyW//KmVXgCA+rl0cM/qD758TH6N/U3XuPrsVfLxI/IVEEBQHXUA4xOTuT+CUId2rRX55c87Fj1/BHW4/zoAgKAUAICgFACAoBQAgKCSPQa6tPRp1f8Pj46kGjp7PDuXbKxukV/+ZtHyl23t37vX+vX+tywAQ6Mncle63739kHve3Zl7f/99auJku/OqDPnlzzsmf37+uqj7/e/bjWDDjaFsuDG07uaMHz860Iv5lE1++eWXf+3n7ebfcAEY2bm9nXGzLMuyuaWvbZ9TVfLL367o+eukrvffIjBAUAoAQFCF1wCOnR1c99nDW4sdTaaovTtWXgz14tG1ltvT941d7Ph7QvnlXyt0/vedjlhcJfJn/Xn/dQAAQSkAAEEpAABBKQAAQfXtRrBmLz+v/FJQlI0gzeSXf5n88rdzrg4AIKhadABAb33b9WbdY5DLO2E7fRfOv16GNtwY6mhM/tABAASlAAAEpQAABFV4DaBX256rQn75I5O/Hvl1AABBbbgDqNq7rZ/ML2T3Z6ZLe+ZXfvmrRH75U+Qv5THQ6L9pKr/8kclf3fy+AgIIqmUHsDD7ILfNGJ+YbPnu6X4nv/x5x+SXv8y5dIMOACCo5Isog7sP5FbFxdfPN3S9FGP0ivzy5x2TX/6yxtgoHQBAUAoAQFAKAEBQCgBAUAoAQFAKAEBQCgAAAABA7f0GDE/dC0yXqcwAAAAASUVORK5CYII=','negromante.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAADnElEQVR4nO3dsYsUVxzA8RfxHwjEwkaJAcFKLhIkEUFUFKKFXfIXyDUR/C9MEQIWBsw/oChiY6eCiAlR1CaQVBZCCFwVSBUCaqVye7u5mc2b95ud3+dTHXN7M++7s9zjzezdlgIAUQ6dOfE6egyR9OuPHkMk/XH9H0QduJT54U/v3AsdU0v69c9u06+/5RhCnuwuM96UXwj69W/3GP36W4yl6ZO8zFJnSi8E/fr7/ox+/UOM5a3Bn9xa17dW9YWgX3+N/ejXX2M/swZ7Uoe6sbEqLwT9+ofYr379NfdX/clsdUd7rC8E/fpbHEe//hr7qfYkRr2VaSwvBP36I46rX///+fkdtQYCwGoxAQAkZQIASGql7gF8+v25To/7cf83za8L6tc/9DH0n+v0OP3d+60AAJIyAQAkZQIASMoEAJDUzhYHWV//qsp+Hpd/quynNf36a9Cvv7ZqK4Cx/EVeFP36o8cQSf9q9rsEBJCUCQAgqSb3APrY/cWeLdv+/OllwEhi6Nc/S7/+oVgBACQ1uhXAf3l28fa7r0/u/WjT9769cn0lb8L0of/2u6/1j6v/j1s3Fv8rhH977OjB31s2rZUPSymlfPnr+22X797c9Jjo/haGOP9WAABJjW4FkOl63zz69ZNX6/O/1ASwduR4yKffjIV+/dFjiKR/Ov0uAQEkZQIASKrqPYBXfw27Mtq0/72DHmop+vU32/8I+7NbxfNvBQCQVO8JYEo3QJahX3/0GCLpn1a/FQBAUk3+DuDKpWstDjNa+vWT15jPvxUAQFK9VgCnL3zd+frXxtON/qMZOf36uz42e/8UTfH8WwEAJGUCAEjKBACQ1Oj+G+isqxeOzt1+88HvjUcSQ7/+ebL0Zzf0+bcCAEjKBACQVK9LQF3e2nT4/OellFI+PvTJpu2/XP25z6FGSb/+7aTtP9ZsGGGmeP5Hfw+gq7Ujx18/f3R/8p8Luoh+/ZH9Z7/7oZTy/hfgrGV/AS66Bj4ruj/asv0uAQEkZQIASGr0l4DOX344d/upg7u2bJviMlC//nn065+1TL8VAEBSJgCApEwAAElVvwcQ/X7X6OuA+vVH0q+/T3/nFcDUPguzL/36o8cQSf80+10CAkjKBACQ1CQngKku17rSrz96DJH0d++f5AQAwPaq3y0/sO+zhbPPby+edDpejX1E0a9/0ff062+1j66sAACSMgEAJGUCAEjKBACQlAkAAAAAYPLeAK0qXKM2WYYzAAAAAElFTkSuQmCC','medico_peste.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAAD0klEQVR4nO3dv4scZRzA4TnxB9hccYddGr0QvFyjEOxFQStTiE3S+BdYmdLCVhBC/oUo5BR/dCmCYqcEDEiiHLnYBBtJioOAqMVZyB27e7uT3TfzzjvvfJ8HArc7t7Pv5+bgvXd2Z9M0AAAAAADAGK3lfoKts68dpj52/85P2ceXm379qY/Vr7/LsczzVO4nAGCYTAAAQZkAAILq9BzTS1uvnDjftfbcs8n7O/z7n7n339u/Nchzg/r1z96nX3+qPvqtAACCMgEABPV07idYtIyJQr/+yPQPu98KACCobC+mvPXexeQLINpc3706yBeAZunXn2O/+vV3uT8rAICgsr8G8NH7b3a6v+u7VzvdX2769XdJv/4uWQEABGUCAAjKBAAQlAkAIKjsLwK3OTj9+tz71+9+d/z1xuZ68/DBQV9D6pV+/fPo138kd38VK4CNzfXjf3s3v8ny/toh069fv/4c/UVXAMt4+OCg2dhcn7pv8odw5tz5Ki4MSaVfv379k7rsLzoBTC51Us3OiDX9QujX/6SG0v/HV1/M/8v0r5YH/fLjgg3PT9+8/++J73h06pmmaYbTn2IIx3/wK4BV1fwL0QX9+idv69ff9v2jmwCaJt5Bn6Vff+kxlKR/+f7kH9TWzrnWFyO2ts+k7nquyx++u3BbiQOuX3/r9mD9P3x8qdfnPzoF1DTD6D+xvZLjX+0KwCyvv/QYStKvv4v9VDUBfPDJl83+r3ulh1GMfv2R+6PLcfyruA6gaf6Pj0y/fuLKdfyrmQAA6JYJACCoaieAx70KP3b69ZceQ0n6u+mvdgIA4MkkvZWor9n31NnTS3/v99c+7+1tYfr19/E8NfX3fR3AxWtfT90u3Z9DH8ffCgAgqKTrAN658Grr9m8/+zlpMLXQr79N9P6xG9PxtwIACKqqK4GP7Bz+OXX79toLhUZShn79k6L1N830zyBaf5fH3woAICgTAEBQgz4FdP/O3bn372xP/xdpfb4FrE/69c8TpX9ZY+3v4/hbAQAENegVAFCHT/duHH+d+22Qb8/8BUy6UawAfC6I/tJjKEm//tTHjmICAGB1SaeAarrSLQf9+iPTP55+KwCAoFaeAIZ6vq2vcenX38fzrEq//pTHWQEABGUCAAjKBAAQ1KgmgKGen+uLfv2lx1CS/tX7RzUBALA8EwBAUCtfCLZ/+2brJ8+9/OLiZchvv7c/dul9bL8xtf1xY+qSfv1t2/XrX7RtiP1WAABBVflpoFd2b4zy87+XpV9/6TGUpL+7fisAgKBMAABBmQAAgjIBAAAAAIzefwlpXdg2H1HCAAAAAElFTkSuQmCC','demone.png':'data:image/png;base64,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','inquisitore.png':'data:image/png;base64,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','eretico.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAAEQUlEQVR42u3dsYsUVxzA8Vk9yF9xxYHEVIcYCFYWFjkODtIIATtJkXAWKSws1EpTXJEiRUQLSRcIXCMIEgsLKwkkhKs0BK64v0JI0MY5hvFudmZ2Z/a9+X2+1cLOvN3vvDf7e7/33rwtCgAAAAAAAAAAAAAAAAAAAAAAgA9srG++21jffMefP3/+SIvZ0JXf5fjDo4PZ1Bo/f/78Y/oLAB8awBfnP5t77B9vXk+uofDnzz+uf+gAUI3+bRpAG6qNJPVGwJ8//7j+uXAml8pfdlm5NX7+/Pnn4R86AAxV+U2fE6Hx8+fPP33/3FgbsvAu43pThD9//giTAYwdlVPrBfDnzz+uf47MhqiU6gRNtZJe/PRN5/KufP/4+HW93BQngvjz5x/XP3QGUK+kKn0qv+m8VCufP3/+cf3DB4AhU7TcUj7+/PnH9c+BUZ8E7tILqKZ+uUZ+/vz5x/UPnwEAAAQAAEBiDPIcQPSxOv78+SMHZmNUft8VAFXKMcGc9kDhz59/LP/cGOxBsIe7Wx9V3qKVn1PPhz9//rH8QweAkyq/2giWQcrRnz9//nH9c2W27MpvYtEnAVNtCPz584/rnzNLmQQ+PDqYzWsEX19YLx798rxTud9e/zKLi8ifP/+4/uEzgGov4O7Vyye+/8+/h53L/O3vo+PXZbn39l8m3Qvizz+y/8H9r058/4f9vxbyL8vdvPNEFpBaBtCGT89tHDfeppSwnvI93N0qvnvwe3Fv/+WpN1cO8Ocf2f/21YvHP959/DfvPDk1uGDFGcC83k+V+k2wSNqZS++PP/8I/m1+oOtBYAr+MoAO1FPZpmOGuHFWDX/+kf3rQzlNxwwRONAiAygjetso26UHtAhlGjz0OCh//vy7+w89RFMOA5kHGCkALNrLGfJGGOMG4M+ff/9e/pCBQABYDo1DQK+e3epU2KXtvUldHP78+cf1j0CWu4GWPayom07x5x/Zv8wwbDo3cAZQ5defnza+f+3GTvHq2a3i0vZe9kvW+PPn39/fkk0ZAABgKhnAtRs7yaXBYy6N48+ffzpUVwMhcAbgzzf48+ePJQaAcnlV1Fl9/vz5W9UTgaVOAhdFMdmJMP78+bf3NxGccQaQC5YD8udvOahhoBEygNQmgcaGP3/+kAEAAAQAaTB//vxXiWGgBANAuYfIVLaw5c+ff3d/6/TTZ+4cQPSlYPz588dJpJZ19Nkdda1PYW32P8+998OfP/9m/6Zlnnr/edBrP+2Ux9vG2COcP3/+cf3r1+Hmzucrdf7x6Z+93a0CAoCg9PpP4K5/FXf2k48/5v+3/zWWddq5885LJT3u49y1zFVdC/Xf/bPbXIuSFJ3VvwAAAKhRDsHkiCEgAJABAADaMoVhKBkAAARFAAAAAQAAEIlR5gDqy9zGOneVDPG9I16LXJ0X8YnoHOVayAAAAAAAAAAAAAAAAIPxHuGZp+LWIVJ6AAAAAElFTkSuQmCC','strega.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAAE30lEQVR42u2dvWrbUBiGT5xAx16BWwyFksWrh2y9g0JJCDVZSoZMJt26pCRLtgZPGUKXkBASCr2Dbhm8dulSKG2voGOhwV0iWcg/kSUdnZ/3eSBDnFjSo3Os93w6kmUMAACATTrt7rjT7o7xxx9//MEPVppq/Fmv//j9dUWl8+OPP/6a/gTAfQd48vhZ+tqvP99lOgP++OOv6y8dANn0z3aALDF3Bvzxx1/XnwCYkf6LyHeG0DsE/vjjr+svHQBF0r9oZwixE+CPP/66/iHQamIlZRq/yvt8A3/88df1lwyAui75SjpBaJeQ4Y8//rr+0gFQtfQLHfzxx59RvHQFUGfjhzoKwB9//KkCpAJAvZHwxx9/kK8A6i79QhsF4I8//rr+kgHA6Ad//PEHwQBoYuLH51EA/vjjr+tPBWC58UMBf/zxB6kAaDKRfRwF4I8//rr+IbPWdPr3n66WXv7Fz7vgRz/4449/nP7RB8BDqTvri5ymeV56Y/PLX7Q9Nr47BH/88df1j5EWuwAAgAqg1lLPRhlXZL3FRiH2S1388cc/Tn8qAAAA0KwA1FMWf/zxByoAAAAIlkaeCPZl+KaW5b0YfDTGhDPDjz/++Ov6h8CazxuXNLgq+OOPP9ikRePjjz/++BMAXjb+ab9nTvs92c6PP/74a/kHGwCddnec/ama5tmGD6ET4I8//rr+VAAAABAMtc2mJ4m/2due+tvN6MoYU/xqgHwJaIwxexej9DUfrwLAH3/8jTkfnEz9bWe4H70/AbDgA1D1Q5AntAMA/vir+M8KgKohEIK/dACU/W7ueZ1hXuNv9rbTD5JPnQB//PG3738+OEmDhBCoB6f3ASwzOTRvZGWMMZ+PttIO+PLgOpiOgT/++BdjXmURsn+UAfD+9bvC/3t4eVxoGYeXx+ZmdGU2e9vpKKjT7o59HAXgjz/+9fvvDPfN+eAkrQJ89ZcLgGz5t0zjl/l/H8Eff/x1/UMnyMtAk3JY9bmg+OOv7J+cDuK5wI4DoKkGSEYKyQSYj6Mf/PHH365/MgEM4hVAnuzET3ZCSAX88cdf118yADgNgD/+nAbiNJCjAMjf+GJ7Qse3CSP88cd/ciBW86cCuKfp85LZ9fkwCsIff2X/ps/LZ9dHFeAoAB667T128Mcf/8U3Z4FIBeAa1Q8h/vjjTwhJBYCvl8Phjz/+zflzOajDAKD8xR9//Bl5UwGkIxHXM/SuPoz446/sn4zEXfsTRuVZ6suU8qMf16VotuPfjK7Mh9319Hcb3wqIP/74Tw64rk/FZA/8O8N96/7z9ocvlPlyvGgeCclkIP7460IVUI41Oh3++OPPQbc8r3pbTtf/aXRd+r2FKwAmv/DHH38O+nHRYhcAAGhSaNIglFuts5NAb8++1fbcUPzxx1/XP5T9Ij0JDAAAy1FoErhskiYJufpoejV3f/8tXHa5966Pq25zVf8qztWX6d5fvf2r7IuE8n2H9rfhb7NfBBEAPnN7tjde5vWEjd3TKB4ofXGwkRiNFf3V2x9/bf+qcAoIAECURiqAfInb1HtdYmO7FfdFqM5VfBSdVfaFZADYJF/KZZ8J2sTt4K7pH90aYybnI9X81dsff21/rwOgyiRJqBMsNrZbcV/EMMEWsw/tHwfMAQAAAAAAAAAAAAAAxMl/emMrato/WnAAAAAASUVORK5CYII=','saraceno.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYAAAABACAYAAAATWKC/AAAFXklEQVR42u2dsU7bQBjHnTRSH6ETA52qDpmiQtUBKS/A0rlDi4TURkJM9BHKhCqlSEiFoXMXXgCJAVFQpgxVJxiYeIRKreh09GTOztm+O9/5+/2WRtgJ/Pyd87/P56RZBgAAAAAAcujF8ocsLw3vTD+/vpn3JBQCf/zxl+svNgCKCi9lIOCPP/5y/UUHgF78n/Pvxn2eD193dhDgjz/+cv1joB9z8fPbbGcLXRn8+OOPfzf9xQeATfGr7JMq+OOPv1z/thmESnmXr5lKK4g//vjL9acDsEC/xtdkn1TBH3/85fq3jbck1dN/fr5v3Gf48v3CNs9U/BRmAPjjj79cf3EBUNbuFQ2A/CAoY36+f79vjAMAf/zxl+ufKs7XAPRi2xRX7V+0b9ngiRH88cdfrr/4AHAxcCSCP/74Q2j6HAIAADoAbylue52vq7MY/PHHHzrbAYT+hN7y0vAupk8F4o8//nL9U6bncgCEuo6Xn1G0fVcA/vjjL9efAIggjdscBPjjj79c/5QZ+C6CGhwnn981eu3x1qHxd8T00XD88cdfrr/YAGizADEUH3/88WfmnyJebwN1lf76a1RpN2+vLlttTfHHH3+5/uIDoA1U0fP/SgF//PGX6y8+AExFv726vJM0EPDHH3+5/lUYxPqHqUWfJoU3bX/y9EUS1wzxxx9/uf50AB5nB5JnA/jjjz/dQOcCwFTUsrTv2iDAH3/85frXpXE7ZLsq7+o+YEX+9q98QfPFrzpA8Mcff/zpABJN/0V0qfj444+/XP8mOFsE3t1cKdy2c3CRjbcOa88CVPrvbq5kOwcXURYXf/wl+8+m64XbRpNjJ/6z6Xo2mhzz5h5jACw6OdRJUKUd1Nu+shPMxwwBf/zxdxcOKgTq+pcFTOz+MdMPeRLohS27zSu/XX+ueqyuPabS/uGPv2R//Q28qr/+XPU4Nf9OdgCqCHVnJ3Xu9Y2puPjjj3/92Xnq/mIDIL/yr65L2p4Ib9aeZVmWZd9Of9XaXqW189H+4Y8//v9R1+VtgyB1f7EBsOiWr7onQsj0bzJDwB9//IupGwSp+IsOAL340+2hcZ/J3vz+RGiyaGXDj9OvQQ8U/vjjb+c/mhw3WrSN0b+r9F0VP7/N5nY13+nvqv3DH3/8q/nb3K6Zir/oALAtfsiTYHdzJVtd28hW1zYqtXR12j/88ce/nr+vEJhN14P5cwmooPiq3TNtn24PH2wPnf6uwR9//OX6i74ElMdU3JAFt8Fn+4c//vjL9RcTAKr909NdL/TZ0Tg7Oxobt6nnhL4W6qP9xR9//Ov5h14LoEsI0AGo4pseSwF//PGX6y8+AGJGevuHP/74g9cAePX2xPg4FPnvRAnd/uGPP/7t+ee/Eyi0f1eo/FUQ+gp/vvA2t4mFQC+469kA/vjjL9dfVAeg/tedslu+in6mnuP7E5E+0x9//PFv5u/7E8HM/gN3ALGlfVvgjz/+0OkOwJTorvdNBfzxx1+uv9gO4Ppm3lMLLZO9+cLk14tf1P4u+prXmMAff/zr+Rdd/knJvwybBejQtfLSAegvXJbuNoPfJVXuhHB1YPHHH//6b/4uqXInEJiplBi2Bzrkwpf6pGWd9POV+PjjL9k/5MKv+qRxCP+i4/Hpw6jVN/GPX2a1j0HP50CIvf3pSuuHP/74EwDeLgEBAED38JqaKiEfPX641vz395+FqVX0fJvntkVTZ45F2s5Nj4VE51TrL2YRGAAAuseAQwAAEGbGHRt0AAAAQiEAAAAIAAAAkESQNQC1at/W89vA198s8Vik6NzURaKzhGNBBwAAAAAAAAAAAAAAAAAAAN74BxHLqScG+dU6AAAAAElFTkSuQmCC','libri_infuocati.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAABACAYAAAD1Xam+AAAEOUlEQVR42u2dvWsUQRTA3y0HaS0tPCSIlhGEiGAhKKRIEfzCWoNgCiFio/+CjShYpJBoLfiBRToFCyGkSJFS0SBpLARtLeSsBo7N3u7M7MzN1+9XRTP65jf77u2b2Y2KAAAAAABAQQx0Bs2PFsbq6/2DvcGsJhcqLl5pefmOm3P+VyaTaPr1LORnGRevtLx8x809/yvdgbvLc0ESK1RcvNLy8h03V6/KpAqpyUyrRvOjhfHvO4vjvtUqVNy2+eTo5etuFWue5OrVJ26lMwmdKqTGn9n62+sihIpbmpePD3/MeZKrV9+4nVuA+iSaqpGPixEqru8ki8FrFq1qTHmSq5eLuJVOC2L6IdG5CPOjhXGfgw7buLl6NcV1XQxj8fLdDZWU/wPbu55qOaaNnfz+5COMpsntH+wNfMd1deePzWtaXJ8fhpBepnFN16K0/K9MTx+P3L2gNXby91S1U5K7y3OHvu8rruu2PxYv3bgu7vgxepnEddGC55r/lUkLoiYxWWVM9h51cd0/axrXdj9ku6ealZdJXJstQVeixuClE9e2HS4x/yvdv0C3Ak27GNPGdi2Ibdw+5wExe+nE7dsNxOplGtfl3T/X/K909o71SXzfWmqdQH0SXdVNt+3RjWt7qNO2Z4rBSzeu7VZIZ88Y0ks3ru1NoMT8H047aFCTaqussY/bXZ47dGiiA/55+NtS0vWvxCO6F8f1RfSRFCl5xeKfmleJ+V9Jxtg+CsIf/1L8q6590J9nn7QOSmIbV98D2e4D8cc/Z/+qq3p0tRm6e0xX40zj9q2esXql4h86T3z555L/VddkdAK1jZu8EC7G2cTtkwQxe6XgH8N6+vDPJf+HOm2QyNLU9mn7/cPJBkViG3f77Al5vvPN6MLjj38p/sb/JFhTgDpNAX2Ou7V2XEREzq9+bF0AFz8bgD/+OfkPTRZiMmhbVQk17vPmRRERebHxw7jq449/if5DF4uR8jj88S/Zv/cWICV8tID445+yf9YvAgGAgw4g5Wro+i0w/PHPyX8oiaIOPBRNJ6A5gz/+LvytC8CT9VMiInLu0tUgC/Dv107jfBT3nn7xGh9//HPw5wwAoGB6bwG2P7wJMvHF08eiWED88U/Znw4AoGAoAAAFw2NA/PEv2J8OAIAOIJ+K5/ougD/+OfsPUxbjZRD88e/nr10AbizfFBGR+2tHo1mA+ssQao6KV1svncXCH/8c/TkDACgY4y3A442f0Ux+/frsY+KPf07+dAAABUMBACgYHgPij3/B/nQAAGwB2qtHqf+3Gv745+7Pi0D441+wv3EBeHD5pIiIXFm9FnwB6i9CqLkpHr376jwm/vjn5M8ZAEDBWG8B3m6+Dj75lZVRsNj445+DPx0AQMFQAAAKRvvxRsovRLh4jIM//jn60wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAkyX+npLlpACalDwAAAABJRU5ErkJggg==','palle_fuoco.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAABACAYAAAD1Xam+AAADZklEQVR42u2dPW7bMBSAQ8NLzlBkSNYEgS/SI+QIHdyDJEOO4CPkIkHRrupQ9Awe3SGgSzMkxT9JfNT3AV5i/fgj33siRdm5ugIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAlUHOf8Pbm8TS2ze8/P1SvDY4//i35qxaEew4I/PFv2V/NLf52/3HKr79OXQcC/vhL8FdzyJdISwwC/PGX4q+WEh/2/uPcvcgMBPzxl+avbIHcA5vyWtyW90m7hPW25ntv9+rieC0FAf74S/RXoQoWe4Jc+ZhKN+zbDwL88Zfqr2JuXIydTO+XKz/8/P75/YfnqEaoGQC5I6Be/EsTAH95/ipUzd6frs9/3x2OzmLgkjcbICTvEvc1hNkI9tyqVhCECmBK8ZPqXyv48ZfjvwkFupn070/X55cW9yVMLXlzu7uX/8ercTd1DJ+v+fLtK9W/xpp1L/2/Fv+t72qng2F3OF6MBOyRgd5miU7RQ6GSm5chb7MQ2OwOx4uE6cG/pAj04l9z6C/BfxubDK4ksAuCPU2QiD218bn7ikIvhPrbh3R/ScVv0hGAKxnMK+IaSCmAPTmvtb9LCp/kArhJCYwakuf1TeMuZ+xNkCUSQrvvDscqHSzB3/auSev+up+nSubW/DcpQTFFEfA1hPneEsk/lbskf10IaidEq/7at3bRb9k/e83bNVzSjWWuU5Y+8mjuby+DmPOvOW4C2XPENfmH+r13/xh3qf6b1B1Sr4YhyWHvbyD7Pddx5l4HNq8Oa/PPvTL24O9y78U/e0fX1dBsFPuRxZJhjP0U1FIFAP91+uesDkjxn3TtuEYjtBj8+MclRi/+ucuDEvyrF4Dh9cvHB//2N3puEzNs8j1s0VICaPfe/EMJYDpfOHTu7/OW5q9qJ76vEexqmFJFXfOeVoa+oUDoxf/25vE0FvA9++cWBQn+aorEHwsEW2RM2rX9nJ2fkvRr8C8ZDUj0Ly0ILfurKRPfFQQuuRAtdHytL8lI9a/ZRr36x7ZFa/7bWok/NucpkZbU+Wv1tz9bSdGU3v/mY+St+yf/4k9KENS6evKz0PjjPw3RBWDOr5vyjyHwxx8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANbDP1GHn7TVlG81AAAAAElFTkSuQmCC','impatto.png':'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAABACAYAAAD1Xam+AAADjUlEQVR42u2dMU7kMBSGY7QlV9hi08MBqOhp9xxINByCBmnPQUtPxQFCP1PMFbbPFquMomAnmcR+9nv+Pmm0QstM9Bz/X2zHGZoGAAAAAAAAAAAAAAAAAAAArOBoAgB5+qe7/hzC189sObziVADUCwIAQAAAgAAAAAEAQB38oAlAmvEKeNPkXQXfXUv32LvbP07rsRkBAOwI4PhfjcdGAAA7Ahj6WcuxEQDABnxDbwkJ+I6xZxqAACB5B9Xw2RokEDv8CADUzIlzzrdLkECK8COAXEF5uuunL+bEZc63U0ngkjsfqcKPAKD4K2HKzl9K/XMXgNT1I4CC58SlXemkJaAl/JrrRwCFzolLnfPGCMGa4a+28EusCaSoHwEUOCcufc4bOwTTIbDW8MeUwDdpJqr/Klcwfv287acv5sT6O3+KK2Ft9UsK30mHv334WPy946kz801FoUD7hHd4vzfR+dfUH3oeQOrKl7v+6cgnVH/qNnC5wn/4evn2O+3NcxUSmJPgWALaO/9cCHxtYFGAayXoXj9djtGfKyX8tUhgaIc5AR7e782E3xeC2gS4RoK55CfWwMOQdy780yBYEsDaNrBa+9KFYCx+iwL0XQTmBChVvyst/NqDENrU0b79bda2wXkk8Pvaf9IKeH5+y+7FoQ1qmwKGJOgToLT8+EIQECckwcPXyzkIWwSTQoyxt2mHpoBD7e3DR/RjzrUL+wAAKgYBAFQMUwCIPqwMMawFtTfPi2sAmutcswYwbYNcawDcBRCEuwDcBRivA/gweRdg3PnXBsBSCHz3wJf2AUh2glxtMBcAy/X72sH8PoA1ErAe/ksDYCUE7ASsfCdgSAIhLId/OKG+djieOmflYaBQ/eN6fM8DWKp/qQ+U8CyA+F2A46lzoYDP/Z+lE980/zf5TF+hk63tceC5+pc6s5X6t4ZZuv5stwGHsI9fjSGmJ/ISi+95r9aOb0kCfffY72kDyfrZByAggS0B3vNezeHXLoGtI59c9SMA4ZGA1Hs1h1+rBDTWjwCgyM6vTQJa60cAkH3NI+dnlxx+CQk4ui7EDsPazn/pnwnP+ae4U4TfdxtQWjSMACDpSEDLZ5d45ZcYCSAAAAXhTyUBBACgbF0i5rERAMDOIOaYmsQ6NgIAiDwk13RsvhAE8oWngC83rR1GAAAIAAAQAAAgAABAAAAAAAAAAAAAAAAAAAAAAKCLf9YtHRXfXidjAAAAAElFTkSuQmCC'};
+const spriteSheets={}; let spriteReady=false,loadError=false;
+function sprite(name,frame){return {sheet:name,frame}}
+const assets={
+ hero:{run:[0,1,2,3,4,5].map(i=>sprite('hero',i)),jump:sprite('hero',6),shoot:[sprite('hero',8),sprite('hero',9)],hurt:sprite('hero',10),dead:sprite('hero',11)},
+ enemies:[{walk:[0,1,2,3].map(i=>sprite('heretic',i)),hurt:sprite('heretic',4)}, {walk:[0,1,2,3].map(i=>sprite('witch',i)),hurt:sprite('witch',4)}, {walk:[0,1,2,3].map(i=>sprite('saracen',i)),hurt:sprite('saracen',4)}],
+ demon:{walk:[0,1,2,3].map(i=>sprite('demon',i)),hurt:sprite('demon',4)},plague:{walk:[0,1,2,3].map(i=>sprite('plague',i)),hurt:sprite('plague',4)},necro:{walk:[0,1,2,3].map(i=>sprite('necro',i)),hurt:sprite('necro',4)},knight:{walk:[0,1,2,3].map(i=>sprite('knight',i)),hurt:sprite('knight',4)},skeleton:{walk:[0,1,2,3].map(i=>sprite('skeleton',i)),hurt:sprite('skeleton',4)},books:[0,1,2,3].map(i=>sprite('books',i)),fire:[0,1,2,3].map(i=>sprite('fire',i)),impact:[0,1,2,3].map(i=>sprite('impact',i))
+};
+const loaded=Promise.all(Object.entries(spriteDefs).map(([name,file])=>new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{spriteSheets[name]=img;resolve()};img.onerror=()=>reject(new Error('Impossibile caricare assets/'+file));img.src=embeddedSpriteData[file];})));
+loaded.then(()=>{spriteReady=true;start.disabled=false;start.textContent='INIZIA LA PARTITA';}).catch(err=>{loadError=true;headline.textContent='ASSET NON TROVATI';message.textContent='Errore durante la lettura della grafica incorporata. '+err.message;start.textContent='GRAFICA NON DISPONIBILE';start.disabled=true;});
+start.disabled=true;start.textContent='CARICAMENTO GRAFICA…';
+
+// Sintesi audio Web Audio: nessuna richiesta di rete o file esterno.
+const audio=(()=>{
+ let ctx=null,master=null,musicBus=null,effectsBus=null,nextNote=0,noteIndex=0;
+ const defaults={music:true,effects:true,volume:65};let cfg={...defaults};
+ try{const old=JSON.parse(localStorage.getItem('holyFireAudioV62')||'null');if(old&&typeof old==='object'){cfg.music=old.music!==false;cfg.effects=old.effects!==false;cfg.volume=Number.isFinite(+old.volume)?Math.min(100,Math.max(0,+old.volume)):65}}catch{}
+ const musicInput=document.getElementById('musicEnabled'),fxInput=document.getElementById('effectsEnabled'),volInput=document.getElementById('audioVolume'),volText=document.getElementById('volumeText');
+ function gainSet(){if(!ctx)return;master.gain.setTargetAtTime(cfg.volume/100*.48,ctx.currentTime,.025);musicBus.gain.setTargetAtTime(cfg.music?.29:0,ctx.currentTime,.025);effectsBus.gain.setTargetAtTime(cfg.effects?.62:0,ctx.currentTime,.025)}
+ function persist(){try{localStorage.setItem('holyFireAudioV62',JSON.stringify(cfg))}catch{}gainSet();volText.textContent=cfg.volume+'%'}
+ musicInput.checked=cfg.music;fxInput.checked=cfg.effects;volInput.value=String(cfg.volume);volText.textContent=cfg.volume+'%';
+ musicInput.addEventListener('change',()=>{cfg.music=musicInput.checked;nextNote=0;persist();unlock()});
+ fxInput.addEventListener('change',()=>{cfg.effects=fxInput.checked;persist();unlock();if(cfg.effects)sound('bonus')});
+ volInput.addEventListener('input',()=>{cfg.volume=Number(volInput.value);persist()});
+ function unlock(){try{if(!ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=new AC();master=ctx.createGain();musicBus=ctx.createGain();effectsBus=ctx.createGain();musicBus.connect(master);effectsBus.connect(master);master.connect(ctx.destination);gainSet()}if(ctx.state==='suspended')ctx.resume().catch(()=>{})}catch{}}
+ function tone(freq,at,duration,vol=.14,type='square',bus=effectsBus,bend=1){if(!ctx||!bus||!freq)return;const osc=ctx.createOscillator(),amp=ctx.createGain();osc.type=type;osc.frequency.setValueAtTime(Math.max(30,freq),at);if(bend!==1)osc.frequency.exponentialRampToValueAtTime(Math.max(30,freq*bend),at+duration);amp.gain.setValueAtTime(.0001,at);amp.gain.exponentialRampToValueAtTime(Math.max(.0002,vol),at+.012);amp.gain.exponentialRampToValueAtTime(.0001,at+duration);osc.connect(amp);amp.connect(bus);osc.start(at);osc.stop(at+duration+.012)}
+ function sound(name){if(!cfg.effects||!ctx||ctx.state!=='running')return;const t=ctx.currentTime+.004;switch(name){
+ case 'holy':[196,246.94,293.66,392,493.88].forEach((f,i)=>tone(f,t+i*.065,1.05-i*.08,.105,'sawtooth',effectsBus,.7));break;
+ case 'fire':tone(420,t,.15,.15,'sawtooth',effectsBus,.42);tone(750,t,.09,.07,'triangle',effectsBus,.5);break;
+ case 'jump':tone(260,t,.12,.095,'square',effectsBus,1.7);break;
+ case 'impact':tone(175,t,.14,.16,'sawtooth',effectsBus,.4);break;
+ case 'kill':tone(520,t,.09,.1,'square');tone(780,t+.08,.11,.08,'triangle');break;
+ case 'bonus':tone(523,t,.13,.11,'triangle');tone(659,t+.11,.14,.1,'triangle');tone(880,t+.23,.21,.11,'square');break;
+ case 'combo':tone(740,t,.07,.065,'triangle');tone(988,t+.08,.1,.08,'triangle');break;
+ case 'shield':tone(680,t,.16,.14,'sine',effectsBus,.42);break;
+ case 'damage':tone(290,t,.24,.16,'sawtooth',effectsBus,.22);break;
+ case 'gameover':[392,349,294,196].forEach((f,i)=>tone(f,t+i*.19,.3,.13,'triangle'));break;
+ case 'summon':tone(180,t,.38,.105,'sine',effectsBus,2.1);tone(285,t+.12,.32,.075,'triangle',effectsBus,.72);break;
+ case 'plague':tone(130,t,.33,.10,'sawtooth',effectsBus,.63);tone(95,t+.08,.40,.08,'triangle',effectsBus,.8);break;
+ case 'demon':tone(147,t,.53,.115,'sawtooth',effectsBus,.55);tone(311,t+.09,.4,.082,'square',effectsBus,1.42);break;
+ case 'block':tone(860,t,.11,.11,'square',effectsBus,.54);tone(1210,t+.045,.21,.061,'triangle',effectsBus,.69);break;
+ case 'boss':tone(98,t,.56,.13,'sawtooth',effectsBus,.80);tone(146.83,t+.18,.66,.10,'triangle',effectsBus,.8);break;
+ case 'pause':tone(440,t,.08,.07,'triangle');break;
+ }}
+ // Suite sonora originale: motivo liturgico medievale Dies irae, rielaborato
+ // con organo chiptune, bordone, controcanto, pulsazione grave e campane.
+ const melody=[74,74,74,70,72,72,69,70,70,67,69,69,
+               74,74,74,70,72,72,69,70,70,67,69,69,
+               69,69,70,72,74,72,70,69,67,69,70,69,
+               74,72,70,69,67,65,67,69,70,69,67,62];
+ const drone=[38,38,34,34,36,36,33,34,34,31,33,33];
+ const step=.288;
+ let section=0;
+ function freq(midi){return 440*Math.pow(2,(midi-69)/12)}
+ function bell(f,t,v=.043){tone(f,t,.59,v,'sine',musicBus,.997);tone(f*2.01,t,.35,v*.24,'triangle',musicBus)}
+ function tick(mode){
+  if(!ctx||ctx.state!=='running'||mode!=='play'||!cfg.music){nextNote=0;return}
+  const now=ctx.currentTime;
+  if(!nextNote||nextNote<now-.4)nextNote=now+.055;
+  let safety=0;
+  while(nextNote<now+.18&&safety++<5){
+   const idx=noteIndex%melody.length,bar=Math.floor(noteIndex/4),pos=noteIndex%4;
+   const t=nextNote,lead=melody[idx],bass=drone[bar%drone.length];
+   section=Math.floor(noteIndex/melody.length)%3;
+   // Articolazione irregolare: fraseggio più simile a un canto rispetto al loop precedente.
+   const hold=(pos===3?.97:pos===0?.89:.73)*step;
+   tone(freq(lead),t,hold,.080,'triangle',musicBus);
+   tone(freq(lead-12),t,hold*.96,.018,'sawtooth',musicBus);
+   if(pos===0){
+     tone(freq(bass),t,step*3.65,.081,'triangle',musicBus);
+     tone(freq(bass+12),t+.023,step*3.35,.024,'sine',musicBus);
+     if(bar%4===0)bell(freq(bass+36),t,.030);
+   }
+   // Controcanto in risposta, ogni seconda frase: nessuna copia della melodia principale.
+   if(section>=1&&pos===2){tone(freq(lead-7),t+.05,step*1.52,.031,'sine',musicBus)}
+   if(section===2&&pos===0){tone(freq(bass+19),t+.12,step*1.80,.028,'triangle',musicBus)}
+   // Pulsazione discreta: in fasi avanzate della suite acquista maggiore spessore.
+   if(pos===0||pos===2){tone(pos===0?78:103,t,.075,section===0?.016:.025,'triangle',musicBus,.68)}
+   if(section===2&&pos===3)tone(145,t,.047,.013,'square',musicBus,.75);
+   noteIndex++;nextNote+=step;
+  }
+ }
+ return {unlock,sound,tick};
+})();
+function reset(){if(!spriteReady)return;document.getElementById('results').classList.add('hidden');overlay.classList.remove('victory-animation');stats={shots:0,hits:0,kills:0,byType:Array(8).fill(0),bosses:0,damage:0,specials:0,maxCombo:0};victoryTime=0;victoryBurst=0;difficulty=DIFFICULTIES[difficultyName];try{best=+(localStorage.getItem(bestKey())||0)}catch{}audio.unlock();mode='play';score=0;lives=3;clock=0;spawn=.9;cd=0;scroll=0;hurt=0;shake=0;shots=[];mobs=[];hazards=[];dust=[];fx=[];embers=[];bonuses=[];combo=0;comboTimer=0;power={shield:0,double:0,strong:0};bonusSpawn=9;notice='';noticeT=0;directorTime=0;sequence=[];sequenceGap=0;stage=1;rest=0;nextRest=24;boss=null;bossShots=[];nextBoss=27;bossCount=0;finalBossStarted=false;nextCoven=12;wave=null;holyReady=false;holyProgress=0;waveEarned=0;enemyShots=[];nextSpecial=5;document.getElementById('holy').disabled=true;hero.y=GROUND-hero.h;hero.vy=0;hero.onGround=true;overlay.classList.add('hidden');document.querySelector('.shell').classList.remove('menu-active');notice=difficulty.label+' · PUNTI ×'+String(difficulty.points).replace('.',',');noticeT=2.4}
+function finish(){audio.sound('gameover');mode='over';best=Math.max(score,best);try{localStorage.setItem(bestKey(),best)}catch{}headline.textContent='FINE DELLA CORSA';message.textContent=`Hai totalizzato ${score} punti. Record: ${best}. Vuoi riprovare?`;start.textContent='RIPROVA';overlay.classList.remove('hidden');document.querySelector('.shell').classList.add('menu-active')}
+function spark(x,y,col,n=14,force=1){for(let i=0;i<n;i++)fx.push({x,y,vx:R(-170,170)*force,vy:R(-215,70)*force,t:R(.22,.66),color:col,s:ri(2,6)})}
+function jump(){if(mode==='play'&&hero.onGround){hero.vy=-720;hero.onGround=false;audio.sound('jump');spark(hero.x+20,GROUND-6,'#cda78b',7,.45)}}
+function fire(){if(mode==='menu'||mode==='over'||mode==='victory'){reset();return}if(mode!=='play'||cd>0)return;audio.sound('fire');stats.shots+=power.double>0?2:1;cd=power.double>0?.16:.27;const y=hero.y+41;shots.push({x:hero.x+58,startX:hero.x+58,y,v:690,r:11,a:0,damage:power.strong>0?2:1,pierce:power.strong>0,seen:new Set()});if(power.double>0)shots.push({x:hero.x+48,startX:hero.x+48,y:y-20,v:690,r:10,a:0,damage:power.strong>0?2:1,pierce:power.strong>0,seen:new Set()});spark(hero.x+60,y,'#ffc35d',7,.5);shake=2}
+// Ondata speciale: caricata dai punti delle azioni ordinarie, non dai suoi stessi abbattimenti.
+function holyFire(){
+ if(mode!=='play'||!holyReady||wave)return;
+ stats.specials++;holyReady=false;holyProgress=0;waveEarned=0;
+ document.getElementById('holy').disabled=true;
+ wave={x:hero.x+58,start:hero.x+58,front:hero.x+58,range:W*2,speed:1100,width:95};
+ notice='✠ DIES IRAE ✠';noticeT=2.4;shake=13;
+ audio.sound('holy');spark(hero.x+58,hero.y+43,'#ffb648',38,1.4);
+}
+function advanceWave(dt){
+ if(!wave)return;
+ const w=wave;const old=w.front;w.front=Math.min(w.start+w.range,w.front+w.speed*dt);
+ // Hit detection sull'intera tratta percorsa nel frame per evitare attraversamenti.
+ const crossed=(x,width)=>x+width>=old-22&&x<=w.front+20&&x+width>=hero.x;
+ for(let i=mobs.length-1;i>=0;i--){const m=mobs[i];if(crossed(m.x,m.w)){
+   mobs.splice(i,1);stats.kills++;stats.byType[m.type]=(stats.byType[m.type]||0)+1;waveEarned+=pointValue(10);score+=pointValue(10);spark(m.x+m.w/2,m.y+m.h/2,'#ffb768',22,1.3);
+ }}
+ for(let i=enemyShots.length-1;i>=0;i--){const p=enemyShots[i];if(crossed(p.x,p.w))enemyShots.splice(i,1)}
+ for(let i=hazards.length-1;i>=0;i--){const h=hazards[i];if(crossed(h.x,h.w)){
+   hazards.splice(i,1);spark(h.x+h.w/2,h.y+15,'#ffb455',20,1.1);
+ }}
+ for(let i=bossShots.length-1;i>=0;i--){const p=bossShots[i];if(crossed(p.x,p.w))bossShots.splice(i,1)}
+ if(boss&&crossed(boss.x,boss.w)){
+   if(boss.devil){victory();wave=null;return}
+   const b=boss;boss=null;stats.bosses++;bossShots=[];waveEarned+=pointValue(120);score+=pointValue(120);audio.sound('kill');
+   spark(b.x+b.w/2,b.y+b.h/2,'#ffe4a0',60,1.8);rest=4;nextRest=Math.max(nextRest,clock+13);
+   notice='CAMPIONE PURIFICATO!';noticeT=2.2;
+ }
+ if(w.front>=w.start+w.range){wave=null;}
+}
+function waveDraw(){
+ if(!wave)return;
+ const x=wave.front, time=clock*24;
+ g.save();g.globalCompositeOperation='screen';
+ const glow=g.createLinearGradient(x-145,0,x+25,0);
+ glow.addColorStop(0,'rgba(245,86,22,0)');glow.addColorStop(.6,'rgba(247,94,26,.38)');glow.addColorStop(1,'rgba(255,213,96,.78)');
+ g.fillStyle=glow;g.fillRect(Math.max(0,x-155),91,Math.min(180,x+30),GROUND-91);
+ for(let i=0;i<15;i++){
+   const yy=89+i*21;const flick=Math.sin(time*.45+i*1.74)*12;
+   poly([[x-54+flick,yy+19],[x-21+flick,yy-15],[x+11,yy+8],[x-6,yy+26]],i%2?'#ff923a':'#ffd16b');
+ }
+ rect(x-5,84,17,GROUND-84,'#fff2ac');
+ g.restore();
+}
+function multiplier(){return Math.min(4,1+Math.floor(combo/5))}
+function defeated(m){stats.kills++;stats.byType[m.type]=(stats.byType[m.type]||0)+1;audio.sound('kill');if(combo>0&&(combo+1)%5===0)audio.sound('combo');combo++;stats.maxCombo=Math.max(combo,stats.maxCombo);comboTimer=4.8;const mult=multiplier();score+=pointValue(10*mult);notice=`COMBO ${combo}  ×${mult}`;noticeT=1.35;spark(m.x+m.w/2,m.y+m.h/2,(['#e5aa81','#a980bf','#c8a56f','#df76af','#82bd8f','#72b69f','#cbd1da','#d9ccad'][m.type]||'#e0c7ac'),26,1.05)}
+function collect(b){audio.sound('bonus');if(b.type==='heart'){lives=Math.min(3,lives+1);notice='CUORE RECUPERATO'}else if(b.type==='shield'){power.shield=1;notice='SCUDO ATTIVO'}else if(b.type==='double'){power.double=10;notice='FUOCO DOPPIO · 10s'}else{power.strong=8;notice='FIAMMA POTENZIATA · 8s'}noticeT=2;spark(b.x,b.y,'#ffe6aa',24,.75)}
+function damage(){if(hurt>0)return;if(power.shield>0){audio.sound('shield');power.shield=0;hurt=.45;shake=5;notice='SCUDO SPEZZATO';noticeT=1.2;spark(hero.x+32,hero.y+45,'#80ddf5',20);return}audio.sound('damage');stats.damage++;lives--;combo=0;comboTimer=0;hurt=.75;shake=8;spark(hero.x+32,hero.y+50,'#e5bea1',22);if(lives<=0)finish()}
+
+
+// Direttore delle ondate: tutte le apparizioni hanno distanza temporale minima.
+let enemyShots=[];let nextSpecial=5;
+function createMob(type,speed,spawnX=W+28){const heights=[75,75,79,87,77,85,91,60], widths=[58,64,62,68,60,64,68,43], hp=[1,2,2,3,2,2,3,1];const h=heights[type];mobs.push({type,x:spawnX,y:GROUND-h,w:widths[type],h,baseY:GROUND-h,v:type===3?Math.min(460,speed*1.45):type===2?speed*1.10:type===1?speed*1.12:type===4?speed*.83:type===5?speed*.86:type===6?speed*.77:type===7?speed*1.12:speed,phase:R(0,7),hp:hp[type],maxHp:hp[type],hit:0,dash:0,dashed:false,flyOffset:0,attack:type===4?0:type===5?0.65:R(2.6,4),shieldTime:2.6,shieldUp:true})}
+function specialEnemyUpdate(dt){
+ // Il medico colpisce non appena la sua figura entra nello schermo; il negromante
+ // evoca frequentemente, ma con un limite contemporaneo per mantenere la partita giocabile.
+ for(const m of mobs){
+  if(m.type===4){
+   m.attack-=dt;
+   if(m.attack<=0 && m.x<W-m.w*.55 && m.x>hero.x+175 && enemyShots.length<4){
+    enemyShots.push({x:m.x+5,y:GROUND-28,w:30,h:21,v:220+stage*8,kind:'miasma',phase:0});audio.sound('plague');
+    m.attack=R(2.6,3.5)*difficulty.attack;
+   }
+  }else if(m.type===5){
+   m.attack-=dt;
+   if(m.attack<=0 && m.x<W-m.w*.4 && m.x>hero.x+200){
+    const active=mobs.filter(e=>e.x<W+80&&e.x>0).length;
+    const skeletons=mobs.filter(e=>e.type===7&&e.x>0).length;
+    const cap=Math.min(7,3+Math.floor((stage-1)/2)+difficulty.cap);
+    if(active<cap && skeletons<3){
+     createMob(7,Math.min(380,m.v*1.25),m.x-48);audio.sound('summon');
+     notice='SCHELETRO EVOCATO!';noticeT=.9;
+     spark(m.x+5,GROUND-34,'#a7d6b1',11,.45);
+     m.attack=R(1.45,1.95)*difficulty.attack;
+    }else m.attack=.45;
+   }
+  }
+  if(m.type===6){m.shieldTime-=dt;if(m.shieldTime<=0){m.shieldUp=!m.shieldUp;m.shieldTime=m.shieldUp?R(2.4,3.3):R(1.7,2.2)}}
+ }
+ for(const p of enemyShots){p.x-=p.v*dt;p.phase+=dt*7}
+ for(let i=enemyShots.length-1;i>=0;i--){const p=enemyShots[i];if(p.x+p.w<0){enemyShots.splice(i,1);continue}if(p.x<hero.x+hero.w-23&&p.x+p.w>hero.x+23&&p.y<hero.y+hero.h-12&&p.y+p.h>hero.y+32){enemyShots.splice(i,1);damage()}}
+}
+function enemyProjectileDraw(){for(const p of enemyShots){const y=p.y+Math.sin(p.phase)*3;g.save();g.globalAlpha=.65;circle(p.x+14,y+9,16,'#477550');circle(p.x+4,y+10,10,'#7aab78');circle(p.x+24,y+5,9,'#a6d2a0');g.restore()}}
+
+function director(dt){
+ directorTime+=dt;
+ const newStage=1+Math.floor(clock/38);
+ if(newStage!==stage){stage=newStage;notice=stage===5?'GLI INFERI — DEMONI IN ARRIVO!':'FASE '+stage;noticeT=2;rest=Math.max(rest,2.5)}
+ if(rest>0){rest-=dt;return}
+ if(boss)return;
+ if(clock>=nextBoss && bossCount<4){startBoss();return}
+ if(stage>=5 && clock>=205 && !finalBossStarted){startDevil();return}
+ if(clock>=nextRest){rest=3.2;nextRest=clock+26;sequence=[];notice='UN MOMENTO DI TREGUA';noticeT=1.9;return}
+ sequenceGap-=dt;if(sequenceGap>0)return;
+ // Densità più alta, ma con crescita graduale e un tetto ragionevole.
+ const pressure=Math.min(1,Math.max(0,(stage-1)/7));
+ const onScreen=mobs.filter(m=>m.x<W+90&&m.x+m.w>0).length;
+ const maxOnScreen=Math.min(7,2+Math.floor((stage-1)/2)+difficulty.cap);
+ if(onScreen>=maxOnScreen){sequenceGap=.23;return}
+ const speed=Math.min(320,177+Math.min(125,(stage-1)*14)+R(0,15));
+ // Spazi minimi sempre sufficienti per reagire e sparare.
+ const lastX=Math.max(-1000,...mobs.map(m=>m.x),...hazards.map(h=>h.x));
+ const clearSpace=(215-35*pressure)/Math.sqrt(difficulty.density);
+ if(lastX>W-clearSpace){sequenceGap=.15;return}
+ // Le trasformazioni rimangono possibili; niente altre comparse a ridosso della coppia.
+ if(stage<3 && clock>=nextCoven && onScreen<=maxOnScreen-2 && hazards.every(h=>h.x<W-330)){
+   const h=75;
+   mobs.push({type:0,x:W+22,y:GROUND-h,w:58,h,baseY:GROUND-h,v:speed*.86*difficulty.speed,phase:R(0,7),hp:1,maxHp:1,hit:0,dash:0,dashed:false,flyOffset:0});
+   mobs.push({type:1,x:W+202,y:GROUND-h,w:64,h,baseY:GROUND-h,v:(speed*.86+105)*difficulty.speed,phase:R(0,7),hp:2,maxHp:2,hit:0,dash:0,dashed:false,flyOffset:0});
+   sequence=[];sequenceGap=3.4;nextCoven=clock+R(23,29);
+   notice='LA STREGA INSEGUE UN ERETICO!';noticeT=2.1;return;
+ }
+ if(!sequence.length){
+   const choices=stage===1?[[0],[0,0],[1],[2],[0,1]]:
+     stage<4?[[0,0],[1,0],[2,0],[0,2],[1],[2],[0,1],[0,0,1]]:
+     [[0,0],[1,0],[2,0],[0,2],[1,2],[2,0,1],[0,1,0],[0,0,1]];
+   sequence=choices[ri(0,choices.length-1)].slice();
+   if(stage>=3)sequence=sequence.map(t=>t===1?5:t);
+   if(stage>=5)sequence=sequence.map(t=>t===0?3:t);
+   if(stage>=2&&clock>=nextSpecial&&Math.random()<.42){sequence=[stage>=4&&Math.random()<.35?6:stage>=3&&Math.random()<.48?5:4];nextSpecial=clock+R(7,12)}
+   // I libri rimangono rari e non si presentano subito dopo un altro ostacolo.
+   if(clock>9&&Math.random()<.10&&hazards.every(h=>h.x<W-500)&&mobs.every(m=>m.x<W-360))sequence=['books'];
+ }
+ const type=sequence.shift();
+ if(type==='books')hazards.push({x:W+25,y:GROUND-39,w:62,h:39,v:speed*difficulty.speed,phase:ri(0,20)});
+ else createMob(type,speed*difficulty.speed);
+ // La frequenza sale da circa un'apparizione ogni 1.7s a ~0.9s.
+ // I limiti di spazio e contemporaneità sopra hanno priorità.
+ const baseGap=1.67-.77*pressure;
+ sequenceGap=(sequence.length?Math.max(.85,baseGap-.16):baseGap+R(.04,.22))/difficulty.density;
+}
+function startDevil(){
+ finalBossStarted=true;nextBoss=Infinity;sequence=[];rest=0;bossShots=[];enemyShots=[];mobs=[];hazards=[];
+ boss={devil:true,x:W+85,y:GROUND-158,w:130,h:158,v:185*difficulty.speed,hp:24,maxHp:24,hit:0,phase:0,attack:2.6};
+ notice='IL DIAVOLO DEGLI INFERI!';noticeT=3.5;audio.sound('boss');shake=8;
+}
+function resultsHtml(){
+ const pct=stats.shots?Math.round(100*stats.hits/stats.shots):0;
+ const items=[['PUNTEGGIO',score.toLocaleString('it-IT')],['DIFFICOLTÀ',difficulty.label],['NEMICI ELIMINATI',stats.kills],['COMBO MASSIMA','×'+Math.min(4,1+Math.floor(stats.maxCombo/5))],['PRECISIONE',pct+'%'],['BOSS SCONFITTI',stats.bosses+1],['DIES IRAE',stats.specials],['DANNI SUBITI',stats.damage]];
+ return '<div class="results-grid">'+items.map(([k,v])=>'<div class="results-cell"><strong>'+v+'</strong><span>'+k+'</span></div>').join('')+'</div><div class="results-foot">Colpi sparati: '+stats.shots+' · A segno: '+stats.hits+'</div>';
+}
+function victory(){
+ const b=boss;boss=null;bossShots=[];mobs=[];hazards=[];enemyShots=[];shots=[];bonuses=[];
+ score+=pointValue(500);best=Math.max(best,score);
+ try{localStorage.setItem(bestKey(),best)}catch{}
+ mode='victoryAnimation';victoryTime=0;victoryBurst=.1;shake=16;
+ document.querySelector('.shell').classList.add('menu-active');
+ overlay.classList.remove('hidden');overlay.classList.add('victory-animation');
+ audio.sound('holy');if(b)spark(b.x+b.w/2,b.y+65,'#ffb259',75,2);
+}
+function showVictoryResults(){
+ mode='victory';overlay.classList.remove('victory-animation');
+ headline.textContent='VICTORIA!';message.textContent='Il Diavolo è stato sconfitto. Gli Inferi sono in pace!';
+ document.getElementById('results').innerHTML=resultsHtml();
+ document.getElementById('results').classList.remove('hidden');
+ start.textContent='GIOCA ANCORA';overlay.classList.remove('hidden');audio.sound('bonus');
+}
+function startBoss(){
+ // Due Campioni nelle zone cittadine, poi i boss specifici delle zone.
+ const encounters=[
+  {kind:'champion',at:27,next:62,hp:11,level:1},
+  {kind:'champion',at:62,next:105,hp:14,level:2},
+  {kind:'necro',at:105,next:143,hp:15,level:3},
+  {kind:'heresiarch',at:143,next:Infinity,hp:19,level:4}
+ ];
+ const cfg=encounters[bossCount];
+ if(!cfg){nextBoss=Infinity;return}
+ bossCount++;nextBoss=cfg.next;
+ sequence=[];rest=0;bossShots=[];enemyShots=[];mobs=[];hazards=[];
+ audio.sound('boss');
+ const champion=cfg.kind==='champion';
+ boss={kind:cfg.kind,level:cfg.level,x:W+65,
+  y:GROUND-(champion?125:133),w:champion?100:110,h:champion?125:133,
+  v:Math.min(280,155+stage*12)*difficulty.speed,hp:cfg.hp,maxHp:cfg.hp,
+  hit:0,phase:0,attack:2.6,special:champion?Infinity:cfg.kind==='necro'?1.3:1.5,
+  rage:false,rageFlash:0,bookGap:0,phaseNotice:false};
+ notice=champion?'IL CAMPIONE '+cfg.level+' SI AVVICINA!':cfg.kind==='necro'?'IL GRANDE NEGROMANTE!':'L’ERESIARCA DELLA FORTEZZA!';
+ noticeT=3;shake=5;
+}
+function bossDefeated(){const b=boss;if(!b)return;stats.bosses++;boss=null;bossShots=[];mobs=mobs.filter(m=>m.type!==7);hazards=hazards.filter(h=>!h.fromBoss);score+=pointValue(120*multiplier());audio.sound('bonus');spark(b.x+b.w/2,b.y+58,'#f8cb7b',55,1.8);notice='CAMPIONE SCONFITTO +'+pointValue(120*multiplier());noticeT=2.5;rest=4;nextRest=Math.max(nextRest,clock+13)}
+function updateBoss(dt){if(!boss)return;
+ const b=boss;b.phase+=dt*(b.rage?5.5:4);b.hit=Math.max(0,b.hit-dt);b.attack-=dt;
+ if(b.rageFlash>0)b.rageFlash=Math.max(0,b.rageFlash-dt);
+ if(b.bookGap>0)b.bookGap=Math.max(0,b.bookGap-dt);
+ // Seconda fase: attiva solo per i boss di zona, mai per i due Campioni o il Diavolo.
+ if(!b.devil&&(b.kind==='necro'||b.kind==='heresiarch')&&!b.rage&&b.hp<=b.maxHp*.5){
+  b.rage=true;b.rageFlash=1.65;b.special=Math.max(.65,Math.min(b.special,1.1));
+  b.attack=Math.max(.75,Math.min(b.attack,1.3));shake=6;
+  notice=b.kind==='necro'?'IL GRANDE NEGROMANTE SI SCATENA!':'L’ERESIARCA DIVENTA FURIOSO!';noticeT=2.4;
+  spark(b.x+b.w/2,b.y+44,b.kind==='necro'?'#b3f69a':'#ffd080',36,1.15);
+  audio.sound('boss');
+ }
+ // Mantiene una posizione raggiungibile dal tiro a gittata ridotta.
+ if(b.x>510)b.x=Math.max(510,b.x-b.v*dt);
+ if(!b.devil){
+  b.special-=dt;
+  if(b.kind!=='champion' && b.special<=0 && b.x<=W-110){
+   if(b.kind==='necro'){
+    const active=mobs.filter(m=>m.x<W+80 && m.x+m.w>0).length;
+    const skeletons=mobs.filter(m=>m.type===7 && m.x+m.w>0).length;
+    if(active<Math.min(b.rage?6:5,3+difficulty.cap+(b.rage?1:0)) && skeletons<(b.rage?4:3)){
+     createMob(7,(225+stage*9)*difficulty.speed,b.x-38);
+     spark(b.x+8,GROUND-48,'#b0dcae',18,.65);
+     audio.sound('summon');notice='IL NEGROMANTE EVOCA UNO SCHELETRO';noticeT=1.1;
+     b.special=(b.rage?1.15+Math.random()*.35:2.05+Math.random()*.55)*difficulty.attack;
+    }else b.special=.55;
+   }else if(b.kind==='heresiarch'){
+    // Libri bassi e distanziati: ogni ostacolo è superabile con un salto.
+    const active=hazards.filter(h=>h.x+h.w>hero.x && h.x<W).length;
+    if(active<(b.rage?3:2) && b.bookGap<=0 && hazards.every(h=>Math.abs(h.x-(b.x-40))>(b.rage?168:185))){
+     hazards.push({x:b.x-38,y:GROUND-39,w:62,h:39,
+       v:(195+stage*11)*difficulty.speed,phase:ri(0,20),fromBoss:true});
+     spark(b.x-20,GROUND-32,'#ffb357',16,.65);
+     audio.sound('fire');notice='L’ERESIARCA EVOCA LIBRI INFIAMMATI';noticeT=1.15;
+     b.bookGap=b.rage?2.05:2.65;
+     b.special=(b.rage?2.0+Math.random()*.4:3.1+Math.random()*.65)*difficulty.attack;
+    }else b.special=.6;
+   }
+  }
+ }
+ // Entrambi conservano la palla di fuoco del mini-boss originale.
+ if(b.attack<=0 && b.x<W-100){
+  bossShots.push({x:b.x+7,y:GROUND-25,w:24,h:19,
+    v:Math.min(320,225+stage*12)*difficulty.speed,phase:0});
+  b.attack=(b.devil?2.1:Math.max(b.rage?1.65:1.9,(3.3-stage*.11)*(b.rage?.76:1)))*difficulty.attack;
+  audio.sound('fire');
+ }
+ for(const p of bossShots){p.x-=p.v*dt;p.phase+=dt*10}
+ bossShots=bossShots.filter(p=>p.x+p.w>0);
+ for(let i=bossShots.length-1;i>=0;i--){const p=bossShots[i];
+  if(p.x<hero.x+hero.w-22&&p.x+p.w>hero.x+22&&p.y<hero.y+hero.h-12&&p.y+p.h>hero.y+28){bossShots.splice(i,1);damage()}}
+ for(let j=shots.length-1;j>=0;j--){const p=shots[j];if(p.seen.has(b))continue;
+  if(p.x+p.r>b.x+15&&p.x-p.r<b.x+b.w-12&&p.y+p.r>b.y+8&&p.y-p.r<b.y+b.h-10){
+   p.seen.add(b);
+   if(b.devil){score+=pointValue(10);b.hit=.18;audio.sound('impact');spark(p.x,p.y,'#ffd18d',10,.65);
+    if(!p.hitRecorded){stats.hits++;p.hitRecorded=true;}if(!p.pierce)shots.splice(j,1);notice='+10 · DIES IRAE PER SCONFIGGERLO';noticeT=.85;
+   }else{if(!p.hitRecorded){stats.hits++;p.hitRecorded=true;}b.hp-=p.damage;b.hit=.18;audio.sound('impact');spark(p.x,p.y,'#ffd18d',8,.6);
+    if(!p.pierce)shots.splice(j,1);if(b.hp<=0){bossDefeated();break}}
+  }
+ }
+}
+function devilDraw(b){
+ const x=b.x,y=b.y,osc=Math.sin(b.phase)*3;
+ drawShadow(x+65,GROUND+2,55,.3);
+ g.save();g.translate(x,y+osc);if(b.hit>0)g.globalAlpha=.72;
+ // Silhouette nera, corna, corpo rosso e occhi incandescenti.
+ poly([[26,40],[7,8],[41,25],[58,0],[79,24],[112,9],[104,56]],'#321425');
+ poly([[18,48],[-12,82],[14,108],[31,86]],'#4c1b2d');
+ poly([[112,49],[141,79],[119,107],[97,88]],'#4c1b2d');
+ rect(28,48,76,82,'#8c2731');rect(35,57,60,62,'#c53d39');
+ rect(39,23,55,42,'#a72c37');poly([[33,36],[42,6],[53,27]],'#f4c08a');poly([[78,27],[96,4],[101,39]],'#f4c08a');
+ rect(48,40,12,7,'#ffe37d');rect(76,40,12,7,'#ffe37d');rect(58,58,20,9,'#301321');
+ rect(37,130,20,23,'#331c2c');rect(78,130,20,23,'#331c2c');
+ rect(100,70,22,15,'#9b2933');circle(121,81,9,'#ec7939');
+ g.restore();
+ for(const p of bossShots){circle(p.x+p.w/2,p.y+p.h/2,14,'#d94523');circle(p.x+p.w/2+3,p.y+p.h/2,8,'#ffd36a')}
+ rect(277,72,405,26,'#26111f');rect(284,79,390,12,'#743038');rect(284,79,390,12,'#ffae50');text('IL DIAVOLO · SOLO DIES IRAE',W/2,68,18,'#ffe1a0','center');
+}
+function bossDraw(){if(!boss)return;const b=boss;
+ drawShadow(b.x+b.w/2,GROUND+2,31,.3);if(b.devil){devilDraw(b);return}
+ if(b.rage){g.save();g.globalAlpha=.13+.10*Math.sin(clock*15);circle(b.x+b.w/2,b.y+b.h/2,74,b.kind==='necro'?'#8ff0a4':'#ffbe63');g.restore();}
+ const sprites=b.kind==='necro'?assets.necro:b.kind==='champion'?assets.enemies[2]:assets.enemies[0];
+ const spr=b.hit>0?sprites.hurt:sprites.walk[Math.floor(b.phase)%4];
+ if(b.kind==='champion')customFoe('champion',b.x,b.y,b.w,b.h,b.phase,b.hit>0,b.level);else if(b.kind==='heresiarch')customFoe('heresiarch',b.x,b.y,b.w,b.h,b.phase,b.hit>0);else drawSprite(spr,b.x,b.y,b.w,b.h,b.hit>0?.72:1,true);
+ if(b.kind==='champion'){
+  // Il nuovo campione possiede già armatura, emblemi e dettagli distintivi.
+  text('✦',b.x+b.w/2,b.y-8,23,'#ffe3a0','center');
+ }else if(b.kind==='necro'){
+  g.save();g.globalAlpha=.35+.15*Math.sin(b.phase*2);
+  circle(b.x+b.w*.42,b.y+51,32,'#6e9e77');g.restore();
+  circle(b.x+13,b.y+68,9,'#a9efa3');
+ }
+ for(const p of bossShots){circle(p.x+p.w/2,p.y+p.h/2,13,'#d95e2f');circle(p.x+p.w/2+2,p.y+p.h/2,7,'#ffd17a')}
+ rect(291,73,378,24,'#241b2d');rect(297,79,366,12,'#693d49');
+ rect(297,79,366*Math.max(0,b.hp)/b.maxHp,12,b.rage?'#ff8958':b.kind==='necro'?'#98d49b':'#f3b86c');
+ if(b.rage){text('FASE II',687,91,13,'#ffd397');if(b.rageFlash>0){g.save();g.globalAlpha=Math.min(.65,b.rageFlash*.4);g.strokeStyle=b.kind==='necro'?'#b4ffab':'#ffe0a3';g.lineWidth=5;g.strokeRect(b.x-5,b.y-5,b.w+10,b.h+10);g.restore();}}
+ text(b.kind==='champion'?'CAMPIONE '+b.level:b.kind==='necro'?'GRANDE NEGROMANTE':'ERESIARCA',W/2,69,17,'#ffe4b0','center');
+}
+
+function update(dt){
+ if(mode!=='play')return;
+ const previousScore=score;
+ clock+=dt;scroll+=dt*(102+Math.min(82,clock*1.35));cd=Math.max(0,cd-dt);hurt=Math.max(0,hurt-dt);shake=Math.max(0,shake-dt*15);
+ noticeT=Math.max(0,noticeT-dt);if(comboTimer>0){comboTimer-=dt;if(comboTimer<=0)combo=0}
+ power.double=Math.max(0,power.double-dt);power.strong=Math.max(0,power.strong-dt);
+ if(!hero.onGround){hero.vy+=1780*dt;hero.y+=hero.vy*dt;if(hero.y>=GROUND-hero.h){hero.y=GROUND-hero.h;hero.vy=0;hero.onGround=true;spark(hero.x+30,GROUND-4,'#b38a74',7,.4)}}
+ if(hero.onGround&&Math.random()<dt*24)dust.push({x:hero.x+18,y:GROUND-4,vx:R(-90,-25),vy:R(-38,-10),t:R(.25,.5),size:ri(2,5)});
+ if(Math.random()<dt*18)embers.push({x:W+8,y:R(180,GROUND-5),vx:R(-65,-18),vy:R(-20,20),t:R(2,4),s:ri(1,3),col:Math.random()<.6?'#f0a35a':'#7a5362'});
+ bonusSpawn-=dt;if(bonusSpawn<=0){const types=['shield','double','strong','heart'];const type=types[ri(0,3)];bonuses.push({x:W+42,y:GROUND-112,w:34,h:34,type,phase:0,v:175+Math.min(120,clock*2)});bonusSpawn=R(13,19)}
+ director(dt);
+ for(const shot of shots){shot.x+=shot.v*dt;shot.a+=dt*18;if(Math.random()<.8)spark(shot.x-7,shot.y,'#ed7442',1,.4)}
+ for(const m of mobs){m.x-=Math.abs(m.v)*dt;m.phase+=dt*(m.type===3?13:7);m.hit=Math.max(0,m.hit-dt);if(m.type===3&&Math.random()<dt*19)spark(m.x+m.w-7,GROUND-8,'#e46b48',1,.2);
+  if(m.type===1){m.flyOffset=21+Math.sin(m.phase*.58)*23;m.y=m.baseY-m.flyOffset}
+  if(m.type===2&&!m.dashed&&m.x<580){m.dashed=true;m.dash=.6;spark(m.x+20,GROUND-10,'#d9a66d',10,.5)}
+  if(m.dash>0){m.x-=m.v*.72*dt;m.dash-=dt}
+  // Scatto iniziale del demone: movimento supplementare per un tempo limitato.
+  if(m.type===3&&m.demonRush>0){
+   m.x-=m.v*.60*dt;
+   m.demonRush=Math.max(0,m.demonRush-dt);
+   if(Math.random()<dt*25)spark(m.x+m.w-8,m.y+m.h-19,'#b958d4',1,.25);
+  }
+ }
+ // La strega che tocca un eretico lo trasforma in demone. L'effetto si attiva una sola volta.
+ for(const witch of mobs){
+  if(witch.type!==1)continue;
+  for(const heretic of mobs){
+   if(heretic.type!==0)continue;
+   const overlapX=witch.x+witch.w-10>heretic.x+8&&heretic.x+heretic.w-8>witch.x+10;
+   const overlapY=witch.y+witch.h>heretic.y+12&&witch.y<heretic.y+heretic.h-12;
+   if(overlapX&&overlapY){
+    heretic.type=3;heretic.hp=3;heretic.maxHp=3;heretic.w=68;heretic.h=87;
+    heretic.y=GROUND-heretic.h;heretic.baseY=heretic.y;
+    // Velocità costante più alta degli eretici, con un'accelerazione ulteriore
+    // nei primi 1,1 secondi dopo la trasformazione.
+    heretic.v=Math.min(345,Math.max(heretic.v*1.35,witch.v*1.3));
+    heretic.demonRush=1.1;
+    heretic.hit=.22;heretic.phase=0;
+    witch.x+=24; // evita una collisione ripetuta tra le due unità
+    spark(heretic.x+34,heretic.y+34,'#db6fe6',32,.9);
+    notice='TRASMUTAZIONE DEMONIACA!';noticeT=2;
+    audio.sound('demon');
+    break;
+   }
+  }
+ }
+ specialEnemyUpdate(dt);
+ for(const h of hazards){h.x-=h.v*dt;h.phase+=dt*6}
+ updateBoss(dt);
+ for(const b of bonuses){b.x-=b.v*dt;b.phase+=dt*5}
+ for(const p of dust){p.x+=p.vx*dt;p.y+=p.vy*dt;p.t-=dt}
+ for(const p of fx){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=400*dt;p.t-=dt}
+ for(const e of embers){e.x+=e.vx*dt;e.y+=e.vy*dt;e.t-=dt}
+ dust=dust.filter(x=>x.t>0);fx=fx.filter(x=>x.t>0);embers=embers.filter(x=>x.t>0&&x.x>-20);
+ advanceWave(dt);
+ for(let i=bonuses.length-1;i>=0;i--){const b=bonuses[i];b.y=GROUND-112+Math.sin(b.phase)*8;if(b.x+b.w<0){bonuses.splice(i,1);continue}if(b.x<hero.x+hero.w-10&&b.x+b.w>hero.x+12&&b.y<hero.y+hero.h-10&&b.y+b.h>hero.y+12){collect(b);bonuses.splice(i,1)}}
+ for(let i=mobs.length-1;i>=0;i--){const m=mobs[i];if(m.x+m.w<0){mobs.splice(i,1);continue}
+  if(m.x<hero.x+hero.w-18&&m.x+m.w>hero.x+14&&(m.type===3||(m.y+m.h>hero.y+17&&m.y<hero.y+hero.h-8))){mobs.splice(i,1);damage();if(mode==='over')break;continue}
+  for(let j=shots.length-1;j>=0;j--){const shot=shots[j];if(shot.seen.has(m))continue;
+   if(shot.x+shot.r>m.x+8&&shot.x-shot.r<m.x+m.w-6&&shot.y+shot.r>m.y+8&&shot.y-shot.r<m.y+m.h){
+    if(m.type===6&&m.shieldUp){shot.seen.add(m);spark(shot.x,shot.y,'#b6c9df',9,.5);audio.sound('block');if(!shot.pierce)shots.splice(j,1);break}if(!shot.hitRecorded){stats.hits++;shot.hitRecorded=true;}shot.seen.add(m);m.hp-=shot.damage;m.hit=.19;spark(shot.x,shot.y,'#ffcc77',12,.7);
+    if(!shot.pierce)shots.splice(j,1);
+    if(m.hp<=0){mobs.splice(i,1);defeated(m)}break
+   }
+  }
+ }
+ for(let i=hazards.length-1;i>=0;i--){const h=hazards[i];if(h.x+h.w<0){hazards.splice(i,1);score+=pointValue(5);continue}
+  if(h.x+14<hero.x+hero.w-21&&h.x+h.w-14>hero.x+21&&h.y+17<hero.y+hero.h-13&&h.y+h.h>hero.y+31){hazards.splice(i,1);spark(h.x+20,h.y+15,'#eaa35d',20,.9);damage()}
+ }
+ shots=shots.filter(s=>s.x-s.startX<MAX_SHOT_RANGE&&s.x<W+30);
+ if(!holyReady){holyProgress+=Math.max(0,score-previousScore-waveEarned);if(holyProgress>=difficulty.holyTarget){holyReady=true;holyProgress=difficulty.holyTarget;document.getElementById('holy').disabled=false;notice='DIES IRAE DISPONIBILE!';noticeT=2;audio.sound('bonus')}}
+ waveEarned=0;
+}
+
+function tower(x,y,w,h,col){rect(x,y,w,h,col);for(let a=0;a<w;a+=22)rect(x+a,y-13,13,15,col);rect(x+w*.4,y+25,w*.2,24,'#322a43');rect(x+w*.44,y+30,w*.12,17,'#d08c72');for(let j=0;j<3;j++)rect(x+10+j*20,y+65,11,3,'#463747')}
+// 7.2 — scenografie a parallasse e pixel detailing; nessuna variazione alle collisioni.
+function wrapX(v,size){return ((v%size)+size)%size}
+function battlement(x,y,w,color){rect(x,y,w,GROUND-y,color);for(let k=0;k<w;k+=18)rect(x+k,y-10,11,11,color);}
+function stainedWindow(x,y,col){rect(x-2,y-2,14,25,'#241d31');rect(x,y,10,19,col);rect(x+4,y,2,19,'#31293d');rect(x,y+8,10,2,'#31293d');rect(x+2,y+2,6,2,'#f8dca8')}
+function gothicCity(x,i,far=false){const roof=245+(i%4)*14;const w=76+(i%3)*20;const stone=far?'#54485d':'#574353';const edge=far?'#685568':'#886171';rect(x,roof,w,GROUND-roof,stone);rect(x+4,roof+10,w-8,3,edge);
+for(let q=0;q<3;q++){let wy=roof+26+q*37;if(wy>GROUND-24)break;stainedWindow(x+16,wy,far?'#916473':(q%2?'#e3a367':'#b77b82'));if(w>89)stainedWindow(x+50,wy,far?'#856377':'#edb477')}
+poly([[x-8,roof],[x+w/2,roof-32],[x+w+8,roof]],far?'#47384e':'#463144');rect(x+w/2-4,roof-45,8,14,stone);rect(x-3,roof+3,w+6,5,edge);
+if(i%4===0){rect(x+w/2-9,roof-71,19,28,stone);poly([[x+w/2-15,roof-71],[x+w/2,roof-95],[x+w/2+16,roof-71]],'#493b53');rect(x+w/2-2,roof-83,4,25,'#e5b18b')}}
+function graveyard(x,i){const tree='#302d40',fog='#61536b';if(i%2===0){rect(x+38,275,9,112,tree);poly([[x+40,270],[x+1,319],[x+79,316]],tree);poly([[x+42,242],[x+14,300],[x+70,301]],tree);poly([[x+42,211],[x+25,261],[x+58,263]],tree)}else{rect(x+22,337,42,51,'#4c4558');poly([[x+20,338],[x+42,313],[x+67,338]],'#625769');rect(x+38,317,9,40,'#776a78');rect(x+25,350,36,4,'#766579')} if(i%3===0){rect(x+2,353,17,36,fog);poly([[x+2,353],[x+10,342],[x+19,353]],fog)}}
+function fortress(x,i){let h=180+(i%3)*25;const c=i%2?'#454354':'#4d495b';battlement(x,h,113,c);rect(x+20,h+39,18,35,'#242634');rect(x+23,h+43,12,20,'#9b6870');rect(x+69,h+55,17,27,'#2c293c');for(let k=0;k<4;k++){rect(x+10+k*27,h+115,16,2,'#676171')}
+if(i%2===0){rect(x+52,h-64,28,64,'#403d50');poly([[x+46,h-64],[x+66,h-92],[x+87,h-64]],'#3b3146');rect(x+65,h-113,3,33,'#c4a084');poly([[x+68,h-112],[x+102,h-102],[x+68,h-93]],'#a95c5d')}}
+function inferno(x,i){
+ const top=225+(i%4)*27;
+ poly([[x-35,GROUND],[x+21,top-60],[x+49,top+25],[x+91,top-85],[x+121,GROUND]],i%2?'#342032':'#442232');
+ for(let k=0;k<3;k++){const xx=x+11+k*37;poly([[xx-11,GROUND-18],[xx,top+15-(k%2)*31],[xx+12,GROUND-18]],'#c54e36');poly([[xx-5,GROUND-18],[xx,top+48-(k%2)*23],[xx+5,GROUND-18]],'#ffad55')}
+ rect(x+35,top+32,13,GROUND-top-32,'#2e1d2f');poly([[x+18,top+42],[x+40,top-2],[x+63,top+42]],'#2e1d2f');
+}
+function bg(){const zone=stage<3?0:stage===3?1:stage===4?2:3;
+const tones=[['#20263e','#875665','#dba078'],['#172739','#3e5160','#849184'],['#222439','#575064','#b07d76'],['#1a0d20','#812c32','#ef6a2d']][zone];const sky=g.createLinearGradient(0,0,0,GROUND);sky.addColorStop(0,tones[0]);sky.addColorStop(.57,tones[1]);sky.addColorStop(1,tones[2]);g.fillStyle=sky;g.fillRect(0,0,W,GROUND);
+// Star field and drifting high clouds (distant layers)
+for(let i=0;i<45;i++){const x=wrapX(i*173+27-scroll*.018,W+45)-20,y=20+(i*47)%193;rect(x,y,(i%4===0?3:1),i%5===0?3:2,zone===0?'#b29aa0':'#bfc5c4')}
+const moon=zone===3?'#ff7733':zone===0? '#f8d5a2':'#d5d8ce';circle(755,109,zone===0?56:44,zone===3?'#ad2c30':zone===0?'#c17d70':'#7c8390');circle(755,109,zone===0?49:38,moon);
+for(let i=0;i<12;i++){let x=wrapX(i*177-scroll*.07,W+240)-120;circle(x,135+(i%4)*18,34,'rgba(56,56,78,.22)');circle(x+29,143+(i%4)*18,26,'rgba(56,56,78,.22)')}
+// Distant ridge
+for(let i=0;i<11;i++){const x=wrapX(i*130-scroll*.13,W+220)-110;poly([[x-90,GROUND],[x,260+(i%3)*13],[x+125,GROUND]],zone===3?'#61242d':zone===0?'#6c5566':zone===1?'#4a5664':'#494356')}
+// Main scenery
+for(let i=0;i<12;i++){const x=wrapX(i*137-scroll*.29,W+300)-155;if(zone===0)gothicCity(x,i,true);else if(zone===1)graveyard(x,i);else if(zone===2)fortress(x,i);else inferno(x,i)}
+for(let i=0;i<15;i++){const x=wrapX(i*101-scroll*.59,W+220)-120;if(zone===0){gothicCity(x,19+i,false)}else if(zone===1){graveyard(x,23+i)}else if(zone===2){if(i%3===0)fortress(x,18+i);else{rect(x,326,87,GROUND-326,'#484456');for(let j=0;j<4;j++)rect(x+j*22,316,13,11,'#484456')}}else inferno(x,19+i)}
+// Foreground road: stones and mortar lines aligned to scrolling
+rect(0,GROUND-14,W,14,zone===3?'#783b38':zone===1?'#858274':'#89665e');rect(0,GROUND-4,W,4,'#d0a07c');rect(0,GROUND,W,H-GROUND,zone===3?'#321e30':zone===1?'#3e4046':'#443844');rect(0,GROUND+11,W,5,'#8f6558');
+for(let i=0;i<26;i++){let x=wrapX(i*46-scroll,W+65)-62;rect(x,GROUND+21,39,3,'#695360');rect(x+9,GROUND+44,34,3,'#604957');rect(x+20,GROUND+69,22,3,'#645261');rect(x-3,GROUND+25,3,19,'#312e3a');rect(x+37,GROUND+50,3,18,'#302c3a')}
+for(let i=0;i<15;i++){let x=wrapX(i*83-scroll*.92,W+145)-70;rect(x,GROUND-13,3,10,'#bf987d');rect(x-4,GROUND-16,3,9,'#d6ae87');if(i%3===0){rect(x-5,GROUND-14,14,3,'#6c4d42')}}
+if(zone===3){for(let i=0;i<18;i++){const x=wrapX(i*91-scroll*.9,W+120)-60;rect(x,GROUND+18+(i%3)*20,18,4,'#f3743d')}}
+for(const e of embers)rect(e.x,e.y,e.s,e.s,e.col);
+// atmospheric ground haze (non-interactive)
+if(zone===1){g.fillStyle='rgba(169,188,172,.085)';for(let i=0;i<8;i++){let x=wrapX(i*173-scroll*.17,W+180)-90;g.fillRect(x,326+(i%3)*9,130,12)}}
+}
+function visualHighlights(){
+// Impact highlights, enemy silhouettes, readable attacks
+for(const m of mobs){if(m.hit>0){g.save();g.globalCompositeOperation='screen';g.globalAlpha=Math.min(.58,m.hit*2.9);circle(m.x+m.w/2,m.y+m.h/2,27,'#ffd39a');g.restore()}
+if(m.type===5){circle(m.x+m.w/2,m.y+13,4+Math.sin(clock*7)*2,'#9bea91')}
+if(m.type===4){circle(m.x+m.w*.55,m.y+20,3,'#c3e1a0')}
+}
+for(const s of shots){g.save();g.globalCompositeOperation='screen';circle(s.x,s.y,16,'rgba(255,145,57,.18)');circle(s.x+2,s.y,8,'rgba(255,223,115,.3)');g.restore()}
+}
+function drawSprite(asset,x,y,w,h,alpha=1,faceLeft=false){if(!spriteReady)return;const img=spriteSheets[asset.sheet];if(!img)return;g.save();g.globalAlpha=alpha;if(faceLeft){g.translate(Math.round(x+w),0);g.scale(-1,1);g.drawImage(img,asset.frame*64,0,64,64,0,Math.round(y),Math.round(w),Math.round(h))}else{g.drawImage(img,asset.frame*64,0,64,64,Math.round(x),Math.round(y),Math.round(w),Math.round(h))}g.restore()}
+function drawShadow(x,y,w,alpha=.24){g.fillStyle=`rgba(31,20,28,${alpha})`;g.beginPath();g.ellipse(x,y,w,7,0,0,Math.PI*2);g.fill()}
+function drawHeroCustom(x,y,state,alpha=1){
+ g.save();
+ g.globalAlpha=alpha;
+ const H=hero.h, W=hero.w, cx=x+W*0.52;
+ const face='#dfb89e', faceShade='#c69476', skinDark='#8b634c', beard='#5d473a';
+ const white='#e8e1d4', white2='#cdc4b2', white3='#b8ac97';
+ const black='#141319', black2='#2a2730', black3='#494452', shoe='#4c3529', hand='#d7a185';
+ const gold='#cba168';
+ const deadLean=state.dead?-0.28:0;
+ g.translate(cx,y+H*0.62);
+ if(deadLean)g.rotate(deadLean);
+ g.translate(-cx,-(y+H*0.62));
+ const step=Math.sin(clock*11+(state.runFrame||0)*0.9);
+ const sway=state.jump?0:step*2.2;
+ const robeSwing=state.jump?2:step*3.0;
+ const armLift=state.shoot?1:0;
+ const frontX=x+33;
+ // shoulder shadow / back drape
+ poly([[x+24,y+31],[x+49,y+30],[x+56,y+46],[x+52+robeSwing*0.2,y+90],[x+44,y+91],[x+45,y+49],[x+25,y+49],[x+23,y+62]],black2);
+ // rear hanging wool panel
+ poly([[x+22,y+44],[x+28,y+44],[x+27,y+92],[x+19,y+92]],white2);
+ // legs and feet (slender)
+ rect(x+29+sway*0.3,y+75,7,15,white3); rect(x+40-sway*0.3,y+74,7,16,white3);
+ rect(x+27+sway*0.3,y+88,11,5,shoe); rect(x+39-sway*0.3,y+88,11,5,shoe);
+ // tunic body
+ poly([[x+27,y+35],[x+45,y+35],[x+49,y+47],[x+51+robeSwing*0.25,y+88],[x+21-robeSwing*0.18,y+88],[x+22,y+47]],white);
+ rect(x+29,y+37,16,34,white2);
+ // black shoulder cape / hood mantle
+ poly([[x+23,y+28],[x+50,y+28],[x+53,y+36],[x+46,y+47],[x+31,y+49],[x+23,y+43],[x+20,y+35]],black);
+ // front textured panel / scapular-like strip
+ rect(frontX,y+42,8,46,white3);
+ for(let i=0;i<7;i++){ rect(frontX+(i%2?1:0), y+45+i*6, 6, 2, white2); }
+ // collar opening
+ poly([[x+34,y+30],[x+41,y+30],[x+39,y+41],[x+34,y+42]],white);
+ // left arm hanging in sleeve
+ poly([[x+21,y+48],[x+31,y+50],[x+28,y+79],[x+19,y+72]],white2);
+ rect(x+20,y+71,7,8,hand);
+ // right arm / shooting arm
+ if(armLift){
+   poly([[x+43,y+43],[x+50,y+35],[x+56,y+38],[x+51,y+54]],white2);
+   rect(x+49,y+31,7,7,hand);
+   rect(x+55,y+27,8,4,'#ffb65c'); rect(x+61,y+25,7,5,'#ff7a43'); rect(x+66,y+26,5,3,'#fff0a8');
+ }else{
+   poly([[x+43,y+47],[x+51,y+49],[x+50,y+77],[x+42,y+72]],white2);
+   rect(x+44,y+72,7,7,hand);
+ }
+ // head profile facing right
+ circle(x+35,y+22.5,9.6,faceShade); circle(x+35.5,y+22,8.7,face);
+ // nose / brow profile
+ poly([[x+40,y+19],[x+46,y+21],[x+47,y+24],[x+42,y+24]],face);
+ poly([[x+37,y+17],[x+42,y+17],[x+46,y+20],[x+38,y+20]],faceShade);
+ // beard and features
+ poly([[x+36,y+25],[x+45,y+26],[x+47,y+34],[x+40,y+35],[x+34,y+31]],beard);
+ rect(x+39,y+21,2,2,'#2f211d'); rect(x+42,y+25,2,1,'#805a49'); rect(x+35,y+18,6,2,'#7b5847');
+ // black coif / hood, based on reference
+ circle(x+33,y+18,10.2,black); rect(x+25,y+18,18,12,black); rect(x+24,y+27,6,11,black); rect(x+27,y+36,2,15,black2);
+ rect(x+30,y+16,11,2,black2);
+ // belt and small cord
+ rect(x+27,y+67,22,3,black2); rect(x+45,y+69,2,10,black2);
+ if(state.hurtFlash){ rect(x+28,y+15,17,4,'#ffb7b7'); }
+ if(state.jump){ rect(x+23,y+86,28,2,'#766976'); }
+ g.restore();
+}
+function heroDraw(){
+ drawShadow(hero.x+35,GROUND+2,20+(!hero.onGround?5:0),hero.onGround?.18:.10);
+ const bob=hero.onGround?Math.abs(Math.sin(clock*12))*1.2:0;
+ const shootPose=cd>(power.double>0?.05:.12);
+ const state={
+   dead:mode==='over'&&lives<=0,
+   hurtFlash:hurt>0&&Math.floor(hurt*14)%2===0,
+   jump:!hero.onGround,
+   shoot:shootPose,
+   runFrame:Math.floor(clock*12)%6
+ };
+ const alpha=state.hurtFlash?.45:1;
+ drawHeroCustom(hero.x+4,hero.y-bob,state,alpha);
+}
+// Personaggi pixel-art ridisegnati su canvas. Unità logiche 100×100,
+// specchiate verso sinistra; le dimensioni fisiche e le collisioni non cambiano.
+function customFoe(kind,x,y,w,h,phase=0,damaged=false,rank=1){
+ g.save();g.translate(Math.round(x+w),Math.round(y));g.scale(-w/100,h/100);
+ const r=(a,b,c,d,k)=>{g.fillStyle=k;g.fillRect(a,b,c,d)};
+ const pg=(pts,k)=>{g.fillStyle=k;g.beginPath();g.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)g.lineTo(pts[i][0],pts[i][1]);g.closePath();g.fill()};
+ const circ=(a,b,rad,k)=>{g.fillStyle=k;g.beginPath();g.arc(a,b,rad,0,Math.PI*2);g.fill()};
+ const step=Math.sin(phase*2.1)*4, pale='#e4b89a', shadow='#a87965', ink='#191821', boot='#32252a';
+ if(damaged)g.globalAlpha=.72;
+ if(kind==='heretic'||kind==='demon'||kind==='heresiarch'){
+  const demon=kind==='demon';
+  // Dissidente cittadino immaginario: capelli corti, volto rasato, abiti laici;
+  // niente copricapi o simboli associabili a una comunità religiosa reale.
+  if(demon){
+    // Goat legs and split hooves, not human shoes.
+    pg([[33+step,72],[46+step,73],[43+step,90],[39+step,95],[29+step,95]],'#75534a');
+    pg([[55-step,73],[67-step,73],[72-step,94],[61-step,96],[54-step,87]],'#75534a');
+    pg([[29+step,91],[39+step,91],[43+step,98],[35+step,98],[34+step,95],[30+step,98],[24+step,98]],'#261c25');
+    pg([[58-step,92],[70-step,91],[76-step,98],[67-step,98],[66-step,95],[61-step,98],[54-step,98]],'#261c25');
+   }else{
+    r(34+step,82,13,14,boot);r(56-step,82,13,14,boot);
+   }
+  // Tunica da viandante con orlo irregolare e giacca di cuoio.
+  pg([[31,35],[65,33],[77,60],[72,87],[23,88],[24,60]],'#6f5146');
+  pg([[33,36],[48,37],[45,82],[25,83]],'#b17b5b');
+  pg([[48,38],[65,37],[71,80],[48,83]],'#875846');
+  r(29,54,42,6,'#362c32');r(47,53,8,9,'#c4a16e');
+  // Maniche e pugni.
+  pg([[24,40],[34,41],[32,71],[20,72]],'#96634d');
+  pg([[64,39],[74,41],[79,67],[68,72]],'#684537');
+  r(20,68,12,8,pale);r(69,68,12,8,pale);
+  // Tracolla con una fibbia di metallo, elemento neutro e ben visibile.
+  pg([[36,37],[42,36],[65,72],[59,74]],'#443838');
+  r(53,58,9,6,'#c4a16e');r(55,59,5,4,'#443838');
+  // Viso senza barba, capelli corti scoperti.
+  circ(53,23,14,shadow);circ(54,22,12,pale);
+  pg([[40,17],[43,10],[56,8],[66,12],[69,19],[65,17],[60,14],[53,16],[47,14]],'#48352f');
+  r(63,23,3,3,demon?'#ff5b32':ink);r(60,31,7,2,'#9b6958');
+  if(kind==='heresiarch'){
+    // Il capo ereticale conserva il volto e gli abiti dell'eretico comune.
+    // Più libri rilegati stretti al petto fra entrambe le braccia.
+    pg([[35,46],[64,43],[69,65],[37,69]],'#291c26');
+    pg([[38,42],[59,39],[63,63],[41,66]],'#b17c4d');
+    r(41,44,17,17,'#e6d3a1');
+    r(42,45,15,2,'#8d5e3e');
+    r(46,48,2,11,'#aa7c57');
+    pg([[42,38],[61,36],[65,45],[45,48]],'#543040');
+    r(46,39,14,2,'#dbbb76');
+    pg([[44,57],[67,54],[70,64],[47,67]],'#69422c');
+    r(49,59,15,2,'#dbc798');
+    // Le mani stringono i volumi: non sono un simbolo religioso.
+    pg([[28,46],[38,45],[47,59],[43,65],[34,58]],'#99674f');
+    r(42,60,8,6,pale);
+    pg([[73,44],[80,49],[65,62],[59,59],[67,49]],'#76503e');
+    r(58,57,9,6,pale);
+    // Fermagli e piccolo dettaglio dorato per distinguere il boss.
+    r(52,42,3,5,'#d4a76c');
+  }
+  if(demon){
+    // Same short hair and secular clothes, now visibly cursed.
+    pg([[42,13],[36,-3],[42,-1],[51,12]],'#543b32');
+    pg([[58,12],[68,-3],[72,0],[67,18]],'#543b32');
+    pg([[42,8],[38,-1],[45,6]],'#ab8a70');
+    pg([[67,9],[70,-1],[63,6]],'#ab8a70');
+    // A tail and ember fissures, without hiding the original tunic.
+    pg([[25,69],[14,61],[9,48],[13,42],[17,56],[30,64]],'#8b5745');
+    r(37,52,3,7,'#c85d3f');r(56,72,3,5,'#bd493d');
+    r(66,23,2,2,'#ffd267');
+   }
+ }else if(kind==='witch'){
+  // Strega: cappello appuntito, volto pallido, mantello viola, scopa da volo.
+  pg([[36,38],[63,36],[77,76],[64,89],[26,85],[23,70]],'#583f68');
+  pg([[29,45],[39,40],[31,80],[19,77]],'#81598a');
+  r(33,69,12,24,'#433043');r(54,73,10,20,'#433043');
+  circ(55,29,13,'#c5a9a0');circ(55,27,11,'#eed5bd');
+  pg([[55,31],[77,35],[61,39]],'#bda38b');r(58,24,3,3,'#312438');
+  pg([[33,20],[50,1],[61,0],[73,23]],'#30233f');r(23,20,58,8,'#30233f');r(28,23,45,3,'#9870ab');
+  // Bristle and wood, slightly angled with flight cycle
+  r(12,83,71,4,'#7e563c');pg([[11,77],[20,81],[20,92],[7,94]],'#d0a467');
+  r(69,44,10,30,'#674a73');r(72,71,8,7,'#d2b6a2');
+ }else if(kind==='saracen'){
+  // Guerriero agile: turbante, sciarpa azzurra e sciabola; nessuna variazione meccanica.
+  r(31+step,81,13,15,boot);r(55-step,81,13,15,boot);
+  pg([[32,35],[64,35],[75,57],[68,88],[29,88],[22,56]],'#856b47');
+  pg([[32,40],[54,37],[47,82],[29,83]],'#c2a26f');
+  r(36,53,33,7,'#3b302e');r(41,61,23,12,'#667a79');
+  pg([[19,39],[32,36],[39,63],[29,68]],'#4d777e');
+  circ(52,23,14,shadow);circ(53,22,12,pale);pg([[46,29],[64,29],[62,40],[52,41]],'#4e362d');
+  pg([[39,13],[45,5],[64,7],[70,20],[60,20],[47,20]],'#e8d5af');
+  r(38,19,35,6,'#f1e7d2');r(41,12,21,3,'#b7a58d');
+  r(63,26,3,3,ink);
+  // Blade profile visible on the left, away from body
+  pg([[17,52],[12,36],[9,20],[6,11],[13,17],[19,35],[22,49]],'#bfcbd0');
+  r(9,51,17,4,'#e2c37e');r(17,54,4,10,'#4a3028');
+ }else if(kind==='champion'){
+  // Due campioni visivamente diversi: nobile armatura rossa / armatura nera con oro.
+  const second=rank===2;
+  const armor=second?'#34313b':'#803d45', highlight=second?'#b99d65':'#cf7f6e';
+  const cape=second?'#4d374e':'#7f3943';
+  r(29+step*.4,77,17,19,boot);r(56-step*.4,77,17,19,boot);
+  pg([[26,34],[71,31],[84,54],[79,89],[19,89],[16,53]],cape);
+  pg([[29,31],[67,31],[77,45],[70,79],[27,79],[19,45]],armor);
+  pg([[31,37],[44,36],[43,75],[28,76]],highlight);
+  r(43,37,17,34,second?'#5a5155':'#a65d63');
+  r(47,40,8,23,second?'#d4b369':'#d3a58a');
+  pg([[18,38],[30,36],[34,64],[20,67]],armor);
+  pg([[67,36],[78,39],[82,64],[66,65]],armor);
+  r(18,61,14,9,second?'#a78f66':'#d3a18c');r(68,61,14,9,second?'#a78f66':'#d3a18c');
+  circ(50,20,15,second?'#453a39':'#9a6c5b');circ(50,21,11,pale);
+  pg([[39,13],[45,7],[61,7],[67,15],[65,28],[57,29],[54,20],[42,24]],second?'#2e2c33':'#6a3943');
+  r(56,19,4,3,'#211b21');
+  if(second){
+   r(28,29,44,5,'#b99d65');r(44,0,13,9,'#e0bd73');r(48,0,5,29,'#ba9e66');
+   r(40,43,25,4,'#ba9e66');r(49,49,7,14,'#d0ac62');
+  }else{
+   pg([[38,11],[50,0],[64,10]],'#cfa271');r(35,28,32,6,'#d4a174');
+   r(42,42,19,5,'#e2ae82');r(48,48,6,19,'#e7bb91');
+  }
+  // Crooked ritual mace / sceptre
+  r(10,30,8,55,second?'#a78c5b':'#76574b');
+  circ(14,27,12,second?'#b7a16e':'#b76e65');
+  r(8,22,12,7,second?'#e4c383':'#e6a38a');
+ }
+ g.restore();
+}
+function enemyDraw(m){drawShadow(m.x+m.w*.45,GROUND+2,18,.18); const idx=Math.floor(m.phase*1.5)%4; const sprites=m.type===3?assets.demon:m.type===4?assets.plague:m.type===5?assets.necro:m.type===6?assets.knight:m.type===7?assets.skeleton:assets.enemies[m.type];const spr=m.hit>0?sprites.hurt:sprites.walk[idx]; if(m.type<3||m.type===3)customFoe(['heretic','witch','saracen','demon'][m.type],m.x-5,m.y-3,m.w+10,m.h+3,m.phase,m.hit>0);else drawSprite(spr,m.x-5,m.y-3,m.w+10,m.h+3,1,true);if(m.type===6&&m.shieldUp){rect(m.x-5,m.y+26,17,45,'#3b4156');rect(m.x-2,m.y+29,10,39,'#9ca5b4')}if(m.type===2&&m.dash>0){rect(m.x-20,m.y+33,13,4,'#f2ca83');rect(m.x-32,m.y+38,18,3,'#c07b5e')} if(m.maxHp>=2){rect(m.x+8,m.y-13,46,8,'#241b2b'); rect(m.x+10,m.y-11,42,4,m.type===3?'#8a326f':m.type===1?'#8d6ab0':'#d6a365'); rect(m.x+10,m.y-11,42*(m.hp/m.maxHp),4,m.type===3?'#f083cf':m.type===1?'#d7a0ef':'#f1c37a')} }
+function booksDraw(h){drawShadow(h.x+h.w*.44,GROUND+3,22,.18); const spr=assets.books[Math.floor(h.phase)%4]; drawSprite(spr,h.x-5,h.y-10,h.w+10,h.h+10)}
+function fireDraw(s){const spr=assets.fire[Math.floor(s.a)%assets.fire.length]; drawSprite(spr,s.x-12,s.y-8,30,20);}
+
+function bonusDraw(b){const xx=b.x+b.w/2,yy=b.y+b.h/2;circle(xx,yy,20,'#422f55');circle(xx,yy,16,b.type==='shield'?'#71aacc':b.type==='heart'?'#ba5967':b.type==='double'?'#f6bc69':'#dc7148');circle(xx-5,yy-6,5,'#ffe2a1');text(b.type==='shield'?'S':b.type==='double'?'2':b.type==='strong'?'F':'♥',xx,yy+6,19,'#fff8df','center')}
+function powerHud(){let xx=492;for(const [name,time,label,col] of [['shield',power.shield,'SCUDO','#80d8f2'],['double',power.double,'DOPPIO','#f0c178'],['strong',power.strong,'FORTE','#ff9456']]){if(time<=0)continue;rect(xx,18,104,41,'#241d32');rect(xx+3,21,98,35,'#473345');text(label,xx+9,35,13,col);if(name==='shield')text('1 URTO',xx+9,50,12);else text(Math.ceil(time)+'s',xx+9,50,12);xx+=108}}
+
+function hud(){text(difficulty.label+' ×'+String(difficulty.points).replace('.',','),W/2,19,13,'#ffe1a1','center');rect(14,13,306,54,'#1b1a2ccc');rect(18,17,298,46,'#463341');rect(22,21,290,38,'#2b2436');text('✦  '+String(score).padStart(5,'0'),36,47,24,'#ffe1a1'); rect(330,13,150,54,'#1b1a2ccc');rect(334,17,142,46,'#382c3c');text('BEST '+String(best).padStart(4,'0'),343,45,16,'#e9bb8d'); rect(736,13,208,54,'#1b1a2ccc');rect(740,17,200,46,'#382c3c'); for(let i=0;i<3;i++)text(i<lives?'♥':'♡',763+i*54,49,30,i<lives?'#ef7a77':'#8b7379'); if(combo>1){text('COMBO ×'+multiplier(),24,95,19,'#ffd077');rect(25,103,Math.max(0,140*comboTimer/4.8),5,'#eab05f')}powerHud();
+ rect(670,77,271,32,'#261c2b');rect(673,80,265,26,'#4b303b');
+ rect(677,100,Math.round(256*(holyReady?1:holyProgress/difficulty.holyTarget)),3,holyReady?'#ffe3a1':'#ed9c54');
+ text(holyReady?'✠ DIES IRAE PRONTO':'✠ DIES IRAE '+Math.floor(holyProgress)+'/'+difficulty.holyTarget,682,97,15,holyReady?'#ffe6a0':'#dcb593');
+ if(noticeT>0)text(notice,W/2,102,22,'#fff0ba','center');if(mode==='pause'){rect(0,0,W,H,'rgba(24,19,33,.78)'); text('Ⅱ   IN PAUSA',W/2,220,40,'#ffe6b5','center'); text('PREMI P PER CONTINUARE',W/2,260,18,'#f4c995','center')} }
+// 7.4 — Segnaletica visiva di combattimento: nessun cambiamento ai danni o ai tempi.
+function combatTelegraphs(){
+ if(mode!=='play')return;
+ const pulse=.58+.42*Math.sin(clock*11);
+ // Attacchi a distanza: segnali leggibili in anticipo, senza nascondere gli sprite.
+ for(const m of mobs){
+  if(m.x<0||m.x>W||m.hp<=0)continue;
+  if((m.type===4||m.type===5)&&Number.isFinite(m.attack)&&m.attack>0&&m.attack<.65){
+    const cx=m.x+m.w*.5,cy=m.y-23;
+    g.save();g.globalAlpha=.65*pulse;circle(cx,cy,11,m.type===4?'#7ae89b':'#bb87ff');
+    g.globalAlpha=1;text('!',cx,cy+6,18,'#21182b','center');g.restore();
+  }
+  if(m.type===6){
+   // Il bagliore dello scudo segnala parata, il bordo caldo segnala vulnerabilità.
+   g.save();g.globalAlpha=.55+.20*pulse;g.strokeStyle=m.shieldUp?'#a7dbed':'#ffc76e';g.lineWidth=3;
+   g.strokeRect(Math.round(m.x+5),Math.round(m.y+7),Math.round(m.w-10),Math.round(m.h-15));g.restore();
+  }
+ }
+ if(boss&&boss.attack>0&&boss.attack<.8){
+   g.save();g.globalAlpha=.45+.35*pulse;circle(boss.x+boss.w*.5,boss.y-22,15,'#ffcb81');
+   g.globalAlpha=1;text('!',boss.x+boss.w*.5,boss.y-15,22,'#261927','center');g.restore();
+ }
+}
+function stageHud(){
+ if(mode!=='play'&&mode!=='pause')return;
+ g.save();rect(485,15,236,47,'rgba(23,19,33,.87)');rect(489,19,228,39,'#3d2d3a');
+ text('FASE '+stage,505,45,19,'#ffe3a0');
+ const elapsedInStage=clock%38;
+ rect(595,48,106,5,'#211a2b');rect(595,48,106*Math.max(0,Math.min(1,elapsedInStage/38)),5,'#d8a46b');
+ g.restore();
+}
+function encounterFeedback(){
+ if(mode!=='play')return;
+ // Una piccola vignettatura al danno, senza alterare la tela di collisioni.
+ if(hurt>0){g.save();g.globalAlpha=Math.min(.15,hurt*.18);rect(0,0,10,H,'#ff6055');rect(W-10,0,10,H,'#ff6055');g.restore()}
+}
+function render(){if(!spriteReady){bg();text(loadError?'ASSET MANCANTI':'CARICAMENTO SPRITE...',W/2,H/2,25,'#ffe3a1','center');return}g.save(); if(shake>0)g.translate(R(-shake,shake),R(-shake*.45,shake*.45)); bg(); heroDraw();if(power.shield>0){g.strokeStyle='#80dcf6';g.lineWidth=4;g.beginPath();g.ellipse(hero.x+34,hero.y+50,43,56,0,0,Math.PI*2);g.stroke()} for(const h of hazards)booksDraw(h); bossDraw();waveDraw(); for(const b of bonuses)bonusDraw(b);for(const m of mobs)enemyDraw(m);enemyProjectileDraw(); combatTelegraphs(); for(const s of shots)fireDraw(s); visualHighlights(); for(const p of dust) rect(p.x,p.y,p.size,p.size,'#cf9d7c'); for(const p of fx) rect(p.x,p.y,p.s,p.s,p.color); g.restore(); if(hurt>0) rect(0,0,W,H,`rgba(255,95,73,${hurt*.12})`); hud();stageHud();encounterFeedback() }
+function tick(t){audio.tick(mode);const dt=Math.min((t-last)/1000||0,.035); last=t;if(mode==='victoryAnimation'){victoryTime+=dt;shake=Math.max(0,shake-dt*14);if(victoryTime>=2.35)showVictoryResults();}else update(dt);render();if(mode==='victoryAnimation'){g.save();g.globalAlpha=.22+.32*Math.abs(Math.sin(victoryTime*7));g.fillStyle='#ffd17e';g.fillRect(0,0,W,H);g.restore();text('✠ VICTORIA ✠',W/2,215,54,'#fff0b4','center');}requestAnimationFrame(tick)}
+function pause(){if(mode==='play'){mode='pause';audio.sound('pause')}else if(mode==='pause'){mode='play';audio.unlock();audio.sound('pause')}}
+document.addEventListener('keydown',e=>{if(['Space','ArrowUp','KeyW','KeyF','KeyP','KeyR','KeyE'].includes(e.code))e.preventDefault(); if(e.repeat&&['Space','KeyP','KeyR','KeyE'].includes(e.code))return; if(e.code==='KeyP')pause(); else if(e.code==='KeyR')reset(); else if(e.code==='KeyE')holyFire(); else if(['ArrowUp','KeyW'].includes(e.code))jump(); else if(['Space','KeyF'].includes(e.code))fire()});
+// Touch Safari: preferisce Pointer Events quando disponibili; sui browser più vecchi usa Touch Events.
+function press(el,action){
+ let lastTouch=0;
+ if(window.PointerEvent){el.addEventListener('pointerdown',e=>{e.preventDefault();action()},{passive:false});}
+ else {el.addEventListener('touchstart',e=>{e.preventDefault();lastTouch=Date.now();action()},{passive:false});
+ el.addEventListener('mousedown',e=>{if(Date.now()-lastTouch<750)return;e.preventDefault();action()});}
+}
+press(C,fire);
+press(document.getElementById('fire'),fire);
+press(document.getElementById('jump'),jump);
+press(document.getElementById('holy'),holyFire);
+document.getElementById('pause').addEventListener('click',e=>{e.preventDefault();pause()});
+document.querySelectorAll('.difficulty-option').forEach(button=>button.addEventListener('click',()=>{if(mode==='play'||mode==='pause')return;difficultyName=button.dataset.level;difficulty=DIFFICULTIES[difficultyName];document.querySelectorAll('.difficulty-option').forEach(b=>{const active=b===button;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active))});const desc={easy:'Ritmo e densità originali',medium:'Nemici più frequenti e veloci · punti ×1,5',hard:'Più avversari, ritmo intenso e attacchi ravvicinati · punti ×2'};document.getElementById('difficulty-description').textContent=desc[difficultyName];try{best=+(localStorage.getItem(bestKey())||0)}catch{best=0}}));
+start.addEventListener('click',e=>{e.preventDefault();reset()});
+// Interrompe la partita quando si cambia applicazione: evita perdite di vite al ritorno.
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='play')mode='pause'});
+requestAnimationFrame(tick);
+})();
+</script></body></html>
